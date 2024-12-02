@@ -1,0 +1,22 @@
+{
+    "plugins": [
+        "prettier-plugin-organize-imports",
+        "prettier-plugin-tailwindcss"
+    ],
+    "tailwindAttributes": [
+        "className"
+    ],
+    "tailwindFunctions": [
+        "clsx"
+    ],
+    "tailwindPreserveWhitespace": true,
+    "tailwindPreserveDuplicates": true,
+    "trailingComma": "all",
+    "useTabs": true,
+    "tabWidth": 2,
+    "semi": false,
+    "singleQuote": true,
+    "bracketSpacing": true,
+    "arrowParens": "always",
+    "endOfLine": "lf"
+}
