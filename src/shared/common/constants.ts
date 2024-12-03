@@ -16,9 +16,64 @@ export const API_PATHS = {
 	USER: {
 		BASE: '/user',
 	},
+	COLOR: {
+		BASE: '/color',
+	},
+	BRAND: {
+		BASE: '/brand',
+	},
+	MATERIAL: {
+		BASE: '/material',
+	},
+	SIZE: {
+		BASE: '/size',
+	},
+	PRODUCT: {
+		BASE: '/product',
+	},
+	REVIEW: {
+		BASE: '/review',
+	},
+	ORDER: {
+		BASE: '/order',
+	},
+	PAYMENT: {
+		BASE: '/payment',
+	},
 }
+
 export const ROUTE_PATHS = {
 	ROOT: '/',
 	SIGN_IN: '/sign-in',
 	USER: '/user',
+	COLOR: '/color',
+	BRAND: '/brand',
+	MATERIAL: '/material',
+	SIZE: '/size',
+	PRODUCT: '/product',
+	REVIEW: '/review',
+	ORDER: '/order',
+	PAYMENT: '/payment',
+}
+
+export const RESOURCE_MAP: Record<string, string> = {
+	'': 'Trang chủ',
+	'sign-in': 'Đăng nhập',
+	user: 'Người dùng',
+	color: 'Màu sắc',
+	brand: 'Thương hiệu',
+	material: 'Chất liệu',
+	size: 'Kích thước',
+	product: 'Sản phẩm',
+	review: 'Đánh giá',
+	order: 'Đơn hàng',
+	payment: 'Thanh toán',
+	undefined: 'Dữ liệu',
+}
+
+export const ACTION_MAP: Record<string, string> = {
+	create: 'Thêm mới',
+	update: 'Cập nhật',
+	delete: 'Xóa',
+	undefined: 'Thao tác',
 }

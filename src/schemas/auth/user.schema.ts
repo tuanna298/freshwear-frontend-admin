@@ -2,14 +2,18 @@ import ZodUtil from '@/lib/zod.util'
 import { BaseDTO } from '@/shared/common/interfaces'
 import { z } from 'zod'
 
+export enum UserGender {
+	MALE,
+	FEMALE,
+}
+
 export const userSchema = z.object({
 	id: z.string().optional().nullable(),
-	code: z.string().optional().nullable(),
-	name: z
+	full_name: z
 		.string({
-			required_error: 'Vui lòng nhập tên',
+			required_error: 'Vui lòng nhập họ tên',
 		})
-		.min(1, 'Vui lòng nhập tên'),
+		.min(1, 'Vui lòng nhập họ tên'),
 	email: z
 		.string({
 			required_error: 'Vui lòng nhập email',
@@ -30,8 +34,13 @@ export const userSchema = z.object({
 		.min(1, 'Vui lòng nhập mật khẩu')
 		.optional(),
 	phone_number: z.string().optional().nullable(),
-	date_of_birth: z.coerce.date().optional().nullable(),
+	dob: z.coerce.date().optional().nullable(),
+	gender: z.nativeEnum(UserGender).optional().nullable(),
+	avatar: z.string().optional().nullable(),
+	address: z.string().optional().nullable(),
+	last_login: z.date().optional().nullable(),
 	created_at: z.date().optional().nullable(),
+	updated_at: z.date().optional().nullable(),
 })
 
 export const signInSchema = userSchema
@@ -42,9 +51,12 @@ export const signInSchema = userSchema
 	.required()
 
 export const updateProfileSchema = userSchema.pick({
-	name: true,
-	date_of_birth: true,
+	full_name: true,
+	dob: true,
 	phone_number: true,
+	gender: true,
+	address: true,
+	avatar: true,
 })
 
 export const changePasswordSchema = z
@@ -78,7 +90,7 @@ export const changePasswordDefaultValues = ZodUtil.getDefaults(
 	changePasswordSchema._def.schema,
 )
 
-export type Profile = z.infer<typeof userSchema>
+export type User = z.infer<typeof userSchema>
 export type SignInDto = z.infer<typeof signInSchema>
 export type UpdateProfileDto = BaseDTO & z.infer<typeof updateProfileSchema>
 export type ChangePasswordDto = z.infer<typeof changePasswordSchema>

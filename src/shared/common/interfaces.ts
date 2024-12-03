@@ -1,7 +1,8 @@
+import { BaseKey, BaseRecord } from '@refinedev/core'
 import { FieldValues } from 'react-hook-form'
 
-export interface DefaultBaseDTO extends FieldValues {
-	id?: string | number | null
+export interface DefaultBaseDTO extends FieldValues, BaseRecord {
+	id?: BaseKey
 	created_at?: Date
 	updated_at?: Date
 	updated_by?: string | number

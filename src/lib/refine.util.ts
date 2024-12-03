@@ -24,25 +24,13 @@ export const generateFilter = (
 	return queryFilters
 }
 
-export const generateSort = (
-	sorters?: CrudSorting,
-): { sortBy: string[]; orderBy: string[] } | undefined => {
+export const generateSort = (sorters?: CrudSorting) => {
 	if (sorters && sorters.length > 0) {
-		const sortBy: string[] = []
-		const orderBy: string[] = []
-
-		sorters.map((item) => {
-			sortBy.push(item.field)
-			orderBy.push(item.order)
-		})
-
-		return {
-			sortBy,
-			orderBy,
-		}
+		return sorters.map((item) => ({
+			[item.field]: item.order,
+		}))
 	}
-
-	return
+	return []
 }
 
 export const mapOperator = (operator: CrudOperators): string => {

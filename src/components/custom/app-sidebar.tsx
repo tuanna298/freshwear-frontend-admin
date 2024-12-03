@@ -6,7 +6,22 @@ import { useLogout } from '@refinedev/core'
 
 import useSidebarStore from '@/shared/hooks/use-sidebar-store'
 import { motion } from 'framer-motion'
-import { LayoutGrid, Lock, LockOpen, LogOut, Shirt } from 'lucide-react'
+import {
+	ALargeSmall,
+	CircleGauge,
+	HandCoins,
+	Lock,
+	LockOpen,
+	LogOut,
+	MessageSquareText,
+	NotepadText,
+	Package,
+	Palette,
+	Scissors,
+	Shirt,
+	Tags,
+	Users,
+} from 'lucide-react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ScrollArea } from '../ui/scroll-area'
@@ -15,7 +30,18 @@ import { Toggle } from '../ui/toggle'
 import Popconfirm from './pop-confirm'
 import PreventDefaultArea from './prevent-default-area'
 
-const { ROOT } = ROUTE_PATHS
+const {
+	ROOT,
+	COLOR,
+	BRAND,
+	MATERIAL,
+	SIZE,
+	PRODUCT,
+	REVIEW,
+	ORDER,
+	PAYMENT,
+	USER,
+} = ROUTE_PATHS
 
 const linkIconClassName = 'h-6 w-6 flex-shrink-0'
 
@@ -23,7 +49,52 @@ const links = [
 	{
 		label: 'Trang chủ',
 		href: ROOT,
-		icon: <LayoutGrid className={linkIconClassName} />,
+		icon: <CircleGauge className={linkIconClassName} />,
+	},
+	{
+		label: 'Màu sắc',
+		href: COLOR,
+		icon: <Palette className={linkIconClassName} />,
+	},
+	{
+		label: 'Thương hiệu',
+		href: BRAND,
+		icon: <Tags className={linkIconClassName} />,
+	},
+	{
+		label: 'Chất liệu',
+		href: MATERIAL,
+		icon: <Scissors className={linkIconClassName} />,
+	},
+	{
+		label: 'Kích cỡ',
+		href: SIZE,
+		icon: <ALargeSmall className={linkIconClassName} />,
+	},
+	{
+		label: 'Sản phẩm',
+		href: PRODUCT,
+		icon: <Package className={linkIconClassName} />,
+	},
+	{
+		label: 'Đánh giá',
+		href: REVIEW,
+		icon: <MessageSquareText className={linkIconClassName} />,
+	},
+	{
+		label: 'Đơn hàng',
+		href: ORDER,
+		icon: <NotepadText className={linkIconClassName} />,
+	},
+	{
+		label: 'Thanh toán',
+		href: PAYMENT,
+		icon: <HandCoins className={linkIconClassName} />,
+	},
+	{
+		label: 'Người dùng',
+		href: USER,
+		icon: <Users className={linkIconClassName} />,
 	},
 ]
 
@@ -57,7 +128,7 @@ const AppSidebar = () => {
 	const { lock, toggleLock } = useSidebarStore()
 	const { mutate: logout } = useLogout()
 
-	const username = profile?.name || 'Unknown User'
+	const username = profile?.full_name || 'Unknown User'
 
 	return (
 		<Sidebar open={open} setOpen={setOpen} animate={!lock}>
@@ -74,7 +145,7 @@ const AppSidebar = () => {
 							Chung
 						</motion.span>
 
-						<ScrollArea className="max-h-[45vh]">
+						<ScrollArea className="max-h-[55vh]">
 							<div className="flex flex-col gap-2">
 								{links.map((link, idx) => (
 									<SidebarLink key={idx} link={link} />
@@ -121,7 +192,7 @@ const AppSidebar = () => {
 									<AvatarImage width={50} height={50} alt="Avatar" />
 									<AvatarFallback
 										style={{
-											backgroundColor: getAvatarColor(profile?.name),
+											backgroundColor: getAvatarColor(username),
 											color: 'hsl(var(--foreground))',
 										}}
 									>

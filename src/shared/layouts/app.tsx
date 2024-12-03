@@ -12,7 +12,7 @@ export default () => {
 		>
 			<AppSidebar />
 			<div className="flex flex-1">
-				<div className="flex h-full w-full flex-1 flex-col overflow-auto rounded-tl-2xl border-l bg-gray-100 p-2 dark:bg-neutral-800 md:p-5">
+				<div className="flex h-full w-full flex-1 flex-col overflow-auto rounded-tl-2xl border-l bg-gray-100 p-2 md:p-5">
 					<Outlet />
 				</div>
 			</div>

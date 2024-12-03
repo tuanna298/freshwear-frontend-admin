@@ -58,10 +58,8 @@ export default {
 		}
 
 		const generatedSort = generateSort(sorters)
-		if (generatedSort) {
-			const { sortBy, orderBy } = generatedSort
-			query.sortBy = sortBy.join(',')
-			query.orderBy = orderBy.join(',')
+		if (generatedSort.length) {
+			query.orderBy = JSON.stringify(generatedSort)
 		}
 
 		const response = await httpConfig.default[requestMethod](
@@ -71,10 +69,10 @@ export default {
 			},
 		)
 
-		const { content } = response.data
+		const content = response.data
 
 		const data = content.data
-		const totalElements = content.totalElements
+		const totalElements = content.pageInfo.total
 		const startIndex =
 			pageSize !== undefined && current !== undefined
 				? (current + 1) * pageSize
@@ -119,7 +117,7 @@ export default {
 			headers,
 		})
 
-		const data = response.data.content
+		const data = response.data
 
 		return {
 			data,
@@ -228,13 +226,8 @@ export default {
 
 		if (sorters) {
 			const generatedSort = generateSort(sorters)
-			if (generatedSort) {
-				const { sortBy, orderBy } = generatedSort
-				const sortQuery = {
-					sortBy: sortBy.join(','),
-					orderBy: orderBy.join(','),
-				}
-				requestUrl = `${requestUrl}&${stringify(sortQuery)}`
+			if (generatedSort.length) {
+				requestUrl = `${requestUrl}&${stringify(generatedSort)}`
 			}
 		}
 

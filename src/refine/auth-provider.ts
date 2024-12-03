@@ -71,9 +71,7 @@ export default {
 		if (!accessToken) return null
 
 		try {
-			return (
-				await authApi.default.getProfile()
-			).data
+			return (await authApi.default.getProfile()).data
 		} catch (error) {
 			console.error('Error fetching user identity', error)
 			return null
