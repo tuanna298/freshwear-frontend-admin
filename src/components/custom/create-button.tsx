@@ -6,10 +6,12 @@ import { Button } from '../ui/button'
 
 const CreateButton = forwardRef<HTMLButtonElement>((props, ref) => {
 	const { resource } = useResource()
+	const resourceLabel = RESOURCE_MAP[resource?.name as string].toLowerCase()
+
 	return (
 		<Button {...props} ref={ref} className="flex gap-2">
 			<PlusSquare />
-			Thêm mới {RESOURCE_MAP[resource?.name as string].toLowerCase()}
+			Thêm mới {resourceLabel}
 		</Button>
 	)
 })

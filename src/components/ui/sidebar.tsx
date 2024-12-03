@@ -175,7 +175,7 @@ export const SidebarLink = ({
 			className={cn(
 				'flex cursor-pointer items-center justify-between gap-2 rounded-full p-2 transition duration-150',
 				isActive
-					? 'bg-primary-muted text-primary'
+					? 'bg-primary/10 text-primary'
 					: disableHoverEffect
 						? ''
 						: 'hover:bg-gray-100 dark:hover:bg-neutral-800',

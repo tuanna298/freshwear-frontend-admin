@@ -28,53 +28,55 @@ const ActionsColumn = <T extends BaseDTO>({
 		delete: true,
 	},
 	actions,
-}: ActionColumnParams<T>): ColumnDef<T> => ({
-	id: 'actions',
-	enableHiding: false,
-	size: 100,
-	cell: ({ row: { original } }) => {
-		const deleteMutation = useDelete<T>({})
-		const { mutate: update, isLoading: isUpdating } = useUpdate({
-			resource,
-		})
-		return (
-			<FormDialog<T>
-				id={`update-${original.id}-form`}
-				formProps={{
-					defaultValues: {
-						...original,
-					},
-				}}
-				dialogProps={{
-					triggerContext: (
-						<AlertDialog>
-							<TableActionsDropdownMenu
-								onDelete={() =>
-									original.id &&
-									deleteMutation.mutate({
-										resource,
-										id: original.id,
-									})
-								}
-								display={display}
-								actions={actions?.(original)}
-							/>
-						</AlertDialog>
-					),
-				}}
-				onSubmit={(data) =>
-					update({
-						id: original.id,
-						values: data,
-					})
-				}
-				isSuccess={isUpdating}
-				{...formDialogProps}
-			/>
-		)
-	},
-	meta: 'Hành động',
-	header: 'Hành động',
-})
+}: ActionColumnParams<T>): ColumnDef<T> => {
+	return {
+		id: 'actions',
+		enableHiding: false,
+		size: 100,
+		cell: ({ row: { original } }) => {
+			const deleteMutation = useDelete<T>({})
+			const { mutate: update, isLoading: isUpdating } = useUpdate({
+				resource,
+			})
+			return (
+				<FormDialog<T>
+					id={`update-${original.id}-form`}
+					formProps={{
+						defaultValues: {
+							...original,
+						},
+					}}
+					dialogProps={{
+						triggerContext: (
+							<AlertDialog>
+								<TableActionsDropdownMenu
+									onDelete={() =>
+										original.id &&
+										deleteMutation.mutate({
+											resource,
+											id: original.id,
+										})
+									}
+									display={display}
+									actions={actions?.(original)}
+								/>
+							</AlertDialog>
+						),
+					}}
+					onSubmit={(data) =>
+						update({
+							id: original.id,
+							values: data,
+						})
+					}
+					isSuccess={isUpdating}
+					{...formDialogProps}
+				/>
+			)
+		},
+		meta: 'Hành động',
+		header: 'Hành động',
+	}
+}
 
 export default ActionsColumn

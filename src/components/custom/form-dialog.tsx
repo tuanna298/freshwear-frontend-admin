@@ -42,9 +42,16 @@ export type FormDialogProps<T extends DefaultBaseDTO> =
 const FormDialog = <T extends DefaultBaseDTO>(props: FormDialogProps<T>) => {
 	const { formAction, resource } = useResourceParams()
 
+	if (!resource) {
+		throw new Error('Resource not found')
+	}
+
+	const resourceLabel = RESOURCE_MAP[resource?.name].toLowerCase()
+	const actionLabel = ACTION_MAP[formAction]
+
 	const {
 		trigger,
-		title = `${ACTION_MAP[formAction as string]} ${RESOURCE_MAP[resource?.name as string].toLowerCase()}`,
+		title = `${actionLabel} ${resourceLabel}`,
 		description,
 		children,
 		submit,

@@ -4,7 +4,7 @@ import { Color, colorSchema } from '@/schemas/color.schema'
 import { useCreate } from '@refinedev/core'
 import ColorForm from './color-form'
 
-const ColorFormDialog = () => {
+const ColorDialog = () => {
 	const create = useCreate<Color>({
 		resource: 'color',
 		successNotification: () => ({
@@ -18,7 +18,7 @@ const ColorFormDialog = () => {
 	return (
 		<FormDialog<Color>
 			schema={colorSchema}
-			id="role-form-dialog"
+			id="color-form-dialog"
 			trigger={<CreateButton />}
 			isSubmitting={create.isLoading}
 			onSubmit={onSubmit}
@@ -30,4 +30,4 @@ const ColorFormDialog = () => {
 	)
 }
 
-export default ColorFormDialog
+export default ColorDialog

@@ -8,7 +8,7 @@ import useSidebarStore from '@/shared/hooks/use-sidebar-store'
 import { motion } from 'framer-motion'
 import {
 	ALargeSmall,
-	CircleGauge,
+	Gauge,
 	HandCoins,
 	Lock,
 	LockOpen,
@@ -49,7 +49,7 @@ const links = [
 	{
 		label: 'Trang chủ',
 		href: ROOT,
-		icon: <CircleGauge className={linkIconClassName} />,
+		icon: <Gauge className={linkIconClassName} />,
 	},
 	{
 		label: 'Màu sắc',
@@ -155,7 +155,7 @@ const AppSidebar = () => {
 					</div>
 				</div>
 				<div>
-					<div className="mb-10 flex flex-col gap-2 overflow-y-auto overflow-x-hidden">
+					<div className="mb-5 flex flex-col gap-2 overflow-y-auto overflow-x-hidden">
 						<div className="p-2 text-sm uppercase tracking-widest opacity-70"></div>
 						<motion.span
 							animate={{

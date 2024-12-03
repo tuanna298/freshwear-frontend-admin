@@ -138,7 +138,7 @@ export default {
 			headers,
 		})
 
-		const { content } = response.data
+		const content = response.data
 		const data = content
 
 		return {
@@ -179,7 +179,7 @@ export default {
 
 		const response = await httpConfig.default[requestMethod](url, { headers })
 
-		const { content } = response.data
+		const content = response.data
 
 		const data = content
 
@@ -204,7 +204,7 @@ export default {
 			headers,
 		})
 
-		const { content } = response.data
+		const content = response.data
 
 		const data = content
 

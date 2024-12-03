@@ -52,3 +52,19 @@ export function getAvatarColor(fullName: string | undefined) {
 	const color = `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase()}`
 	return color
 }
+
+export function getContrastColor(hexColor: string) {
+	// Remove the hash at the start if it's there
+	hexColor = hexColor.replace('#', '')
+
+	// Parse the color to RGB
+	const r = parseInt(hexColor.substr(0, 2), 16)
+	const g = parseInt(hexColor.substr(2, 2), 16)
+	const b = parseInt(hexColor.substr(4, 2), 16)
+
+	// Calculate the perceptive luminance (aka luma) - human eye favors green color
+	const luma = (0.299 * r + 0.587 * g + 0.114 * b) / 255
+
+	// Return black for bright colors, white for dark colors
+	return luma > 0.5 ? '#000000' : '#FFFFFF'
+}

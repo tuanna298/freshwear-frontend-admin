@@ -1,6 +1,7 @@
 import { Suspense } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import GlobalSpinner from './components/custom/global-spinner'
+import AttributeManagement from './modules/attribute/pages/attribute-management'
 import { AuthLayout, SignIn } from './modules/auth'
 import { ColorManagement } from './modules/color'
 import { ROUTE_PATHS } from './shared/common/constants'
@@ -56,6 +57,30 @@ export default () => (
 					element={
 						<Suspense>
 							<ColorManagement />
+						</Suspense>
+					}
+				/>
+				<Route
+					path={BRAND}
+					element={
+						<Suspense>
+							<AttributeManagement />
+						</Suspense>
+					}
+				/>
+				<Route
+					path={MATERIAL}
+					element={
+						<Suspense>
+							<AttributeManagement />
+						</Suspense>
+					}
+				/>
+				<Route
+					path={SIZE}
+					element={
+						<Suspense>
+							<AttributeManagement />
 						</Suspense>
 					}
 				/>
