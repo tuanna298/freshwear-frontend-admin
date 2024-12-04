@@ -41,9 +41,6 @@ export const hslToRgb = (hsl: string): number[] => {
 		b = hueToRgb(p, q, h - 1 / 3)
 	}
 
-	console.log('input', hsl)
-	console.log('result', [round(r * 255), round(g * 255), round(b * 255)])
-
 	return [round(r * 255), round(g * 255), round(b * 255)]
 }
 

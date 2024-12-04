@@ -11,13 +11,7 @@ import ColorDialog from '../components/color-dialog'
 
 const ColorManagement = () => {
 	const { mutate } = useDeleteMany()
-	const columns = useMemo(
-		() =>
-			ColorColumns({
-				resource: 'color',
-			}),
-		[],
-	)
+	const columns = useMemo(() => ColorColumns(), [])
 
 	const {
 		refineCore: { tableQuery, setFilters },

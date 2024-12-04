@@ -14,11 +14,7 @@ import { useEffect, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 
 const ColorForm = ({ mode }: Omit<CommonDialogProps, 'trigger'>) => {
-	const {
-		setValue,
-		watch,
-		formState: { errors },
-	} = useFormContext()
+	const { setValue, watch } = useFormContext()
 
 	const [colorOptions, setColorOptions] = useState<string[]>([])
 
@@ -48,8 +44,6 @@ const ColorForm = ({ mode }: Omit<CommonDialogProps, 'trigger'>) => {
 			{color === watch('code') && <Check className="text-card" />}
 		</Button>
 	))
-
-	console.log('errors', errors)
 
 	return (
 		<>

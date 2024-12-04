@@ -2,8 +2,12 @@ import { useAuthStore } from '@/modules/auth/stores/use-auth-store'
 import type { AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 import axios from 'axios'
 import axiosRetry from 'axios-retry'
-import { API_URL } from '../common/constants'
+import { API_PATHS, API_URL } from '../common/constants'
 import { loadProgressBar } from './nprogress.config'
+
+const {
+	AUTH: { SIGN_IN },
+} = API_PATHS
 
 const http = axios.create({
 	baseURL: API_URL,
@@ -49,6 +53,13 @@ http.interceptors.response.use(
 	},
 	async function (error) {
 		// Any status codes that falls outside the range of 2xx cause this function to trigger
+		if (
+			error?.response?.status === 401 &&
+			!error?.config?.url?.includes(SIGN_IN)
+		) {
+			useAuthStore.getState().clear()
+		}
+
 		return Promise.reject(error)
 	},
 )

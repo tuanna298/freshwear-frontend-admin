@@ -1,9 +1,10 @@
 import { Suspense } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import GlobalSpinner from './components/custom/global-spinner'
-import AttributeManagement from './modules/attribute/pages/attribute-management'
+import { AttributeManagement } from './modules/attribute'
 import { AuthLayout, SignIn } from './modules/auth'
 import { ColorManagement } from './modules/color'
+import { ProductCreate, ProductManagement } from './modules/product'
 import { ROUTE_PATHS } from './shared/common/constants'
 import { AppLayout, ProtectedLayout, PublicLayout } from './shared/layouts'
 
@@ -81,6 +82,22 @@ export default () => (
 					element={
 						<Suspense>
 							<AttributeManagement />
+						</Suspense>
+					}
+				/>
+				<Route
+					path={PRODUCT}
+					element={
+						<Suspense>
+							<ProductManagement />
+						</Suspense>
+					}
+				/>
+				<Route
+					path={PRODUCT + '/create'}
+					element={
+						<Suspense>
+							<ProductCreate />
 						</Suspense>
 					}
 				/>

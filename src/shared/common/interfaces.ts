@@ -51,3 +51,12 @@ export interface BaseErrorResponse {
 	error?: ErrorDetail
 	requestId?: string
 }
+
+export type FetchAllResponse<T extends DefaultBaseDTO> = {
+	data: T[]
+	total: number
+}
+
+export type FetchOneResponse<T extends DefaultBaseDTO> = {
+	data: T
+}

@@ -10,6 +10,7 @@ type Props = {
 	description?: string | React.ReactNode
 	className?: string
 	animated?: boolean
+	wrapWithCard?: boolean
 }
 
 const pageTransition = {
@@ -25,6 +26,7 @@ const PageLayout = ({
 	description = <Skeleton className="h-6 w-96 rounded-full bg-primary-muted" />,
 	className,
 	animated = false,
+	wrapWithCard = true,
 }: Props) => {
 	const MotionComponent = animated ? motion.div : 'div'
 	return (
@@ -39,9 +41,13 @@ const PageLayout = ({
 			<div className={cn('flex h-full flex-col gap-3', className)}>
 				<AppBreadcrumb />
 
-				<Card className="h-full">
-					<CardContent className="h-full p-6">{children}</CardContent>
-				</Card>
+				{wrapWithCard ? (
+					<Card className="h-full">
+						<CardContent className="h-full p-6">{children}</CardContent>
+					</Card>
+				) : (
+					children
+				)}
 			</div>
 		</MotionComponent>
 	)

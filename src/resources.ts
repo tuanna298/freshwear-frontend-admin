@@ -7,22 +7,44 @@ const { USER, COLOR, BRAND, MATERIAL, ORDER, PAYMENT, PRODUCT, REVIEW, SIZE } =
 const getResourceName = (path: string): string | undefined =>
 	path.split('/').pop()
 
-const createResource = (base: string) => ({
-	name: getResourceName(base),
-	list: base,
-	create: base + '/create',
-	edit: base + '/edit/:id',
-	show: base + '/:id',
-})
+interface CustomResourceOptions {
+	create?: boolean
+	edit?: boolean
+	show?: boolean
+}
+
+const createResource = (
+	base: string,
+	options: CustomResourceOptions = { create: true, edit: true, show: true },
+) => {
+	const resource: ResourceProps = {
+		name: getResourceName(base) as string,
+		list: base,
+	}
+
+	if (options.create) {
+		resource.create = base + '/create'
+	}
+
+	if (options.edit) {
+		resource.edit = base + '/edit/:id'
+	}
+
+	if (options.show) {
+		resource.show = base + '/:id'
+	}
+
+	return resource
+}
 
 export default [
-	USER,
-	COLOR,
-	BRAND,
-	MATERIAL,
-	ORDER,
-	PAYMENT,
-	PRODUCT,
-	REVIEW,
-	SIZE,
-].map((i) => createResource(i.BASE)) as ResourceProps[]
+	createResource(USER.BASE),
+	createResource(COLOR.BASE, { create: false, edit: false, show: false }),
+	createResource(BRAND.BASE, { create: false, edit: false, show: false }),
+	createResource(MATERIAL.BASE, { create: false, edit: false, show: false }),
+	createResource(SIZE.BASE, { create: false, edit: false, show: false }),
+	createResource(ORDER.BASE),
+	createResource(PAYMENT.BASE),
+	createResource(PRODUCT.BASE),
+	createResource(REVIEW.BASE),
+] as ResourceProps[]

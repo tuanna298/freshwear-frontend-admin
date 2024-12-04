@@ -1,4 +1,4 @@
-import { RESOURCE_MAP } from '@/shared/common/constants'
+import { ACTION_MAP, RESOURCE_MAP } from '@/shared/common/constants'
 import React from 'react'
 import { useLocation } from 'react-router-dom'
 import {
@@ -23,9 +23,14 @@ const AppBreadcrumb = () => {
 		...pathSegments.map((segment, index) => {
 			// Construct path for each segment
 			const href = `/${pathSegments.slice(0, index + 1).join('/')}`
+			const resourceLabel = RESOURCE_MAP[href.split('/').pop() as string]
+
+			if (segment in ACTION_MAP) {
+				segment = ACTION_MAP[segment]
+			}
+
 			const label =
-				RESOURCE_MAP[href.split('/').pop() as string] ||
-				segment.charAt(0).toUpperCase() + segment.slice(1)
+				resourceLabel || segment.charAt(0).toUpperCase() + segment.slice(1)
 
 			return {
 				label,

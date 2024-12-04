@@ -3,9 +3,9 @@ import { FormInput } from '@/components/custom/form-input'
 import { FormPassword } from '@/components/custom/form-password'
 import { Button } from '@/components/ui/button'
 import {
-    SIGN_IN_FIELDS,
-    signInDefaultValues,
-    signInSchema,
+	SIGN_IN_FIELDS,
+	signInDefaultValues,
+	signInSchema,
 } from '@/schemas/auth/user.schema'
 import { FormItemLayout, FormLayout } from '@/shared/layouts/form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -58,6 +58,8 @@ const SignInForm = () => {
 							placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;"
 							label="Mật khẩu"
 							tabIndex={2}
+							defaultValue=""
+							className="w-full"
 							required
 						/>
 					</FormItemLayout>

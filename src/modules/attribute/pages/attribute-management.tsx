@@ -33,8 +33,6 @@ const AttributeManagement = () => {
 
 	const resourceLabel = RESOURCE_MAP[resource?.name as string].toLowerCase()
 
-	console.log('resourceLabel', resourceLabel)
-
 	return (
 		<PageLayout title={`Quản lý ${resourceLabel}`} animated={true}>
 			<DataTableHeader<Attribute>

@@ -6,8 +6,10 @@ import DataTableColumnHeader from '../data-table-column-header'
 export const IndexColumn = <T extends BaseDTO>(): ColumnDef<T> => ({
 	accessorKey: 'created_at',
 	meta: 'created_at',
-	size: 100,
-	header: (props) => <DataTableColumnHeader title="#" {...props} />,
+	size: 1,
+	header: (props) => (
+		<DataTableColumnHeader className="text-center" title="#" {...props} />
+	),
 	cell: ({ row, table }) => {
 		const { pagination } = table.getState()
 		const { pageIndex, pageSize } = pagination

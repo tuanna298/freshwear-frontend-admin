@@ -8,13 +8,7 @@ import { Color, colorSchema } from '@/schemas/color.schema'
 import { ColumnDef } from '@tanstack/react-table'
 import ColorForm from './color-form'
 
-interface ColorColumnsParams {
-	resource: string
-}
-
-export const ColorColumns = ({
-	resource,
-}: ColorColumnsParams): ColumnDef<Color>[] => {
+export const ColorColumns = (): ColumnDef<Color>[] => {
 	return [
 		SelectCheckboxColumn<Color>(),
 		IndexColumn<Color>(),
@@ -47,7 +41,7 @@ export const ColorColumns = ({
 			},
 		},
 		ActionsColumn<Color>({
-			resource,
+			resource: 'color',
 			formDialogProps: {
 				schema: colorSchema,
 				children: <ColorForm mode="update" />,

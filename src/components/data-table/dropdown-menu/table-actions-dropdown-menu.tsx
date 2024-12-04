@@ -6,6 +6,7 @@ import { DialogTrigger } from '../../ui/dialog'
 import DeleteAlertDialogContent from '../alert/delete-alert-dialog-content'
 
 type Props = {
+	onUpdate?: () => void
 	onDelete: () => void
 	display?: {
 		update?: boolean
@@ -14,6 +15,7 @@ type Props = {
 	actions?: ReactNode
 }
 const TableActionsDropdownMenu = ({
+	onUpdate,
 	onDelete,
 	display = {
 		update: true,
@@ -27,7 +29,7 @@ const TableActionsDropdownMenu = ({
 		<div className="flex items-center gap-2">
 			{display?.update && (
 				<DialogTrigger asChild>
-					<FilePenLine className="size-4 cursor-pointer" />
+					<FilePenLine className="size-4 cursor-pointer" onClick={onUpdate} />
 				</DialogTrigger>
 			)}
 			{actions}
