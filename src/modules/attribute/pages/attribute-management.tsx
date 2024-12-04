@@ -56,7 +56,16 @@ const AttributeManagement = () => {
 			<DataTablePagination<Attribute>
 				table={table}
 				handleDelete={(ids: string[]) =>
-					mutate({ resource: resource.name, ids })
+					mutate({
+						resource: resource.name,
+						ids,
+						successNotification: () => {
+							return {
+								message: 'Xóa thành công',
+								type: 'success',
+							}
+						},
+					})
 				}
 			/>
 		</PageLayout>

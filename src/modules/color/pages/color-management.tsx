@@ -42,7 +42,18 @@ const ColorManagement = () => {
 			<DataTable<Color> table={table} />
 			<DataTablePagination<Color>
 				table={table}
-				handleDelete={(ids: string[]) => mutate({ resource: 'color', ids })}
+				handleDelete={(ids: string[]) =>
+					mutate({
+						resource: 'color',
+						ids,
+						successNotification: () => {
+							return {
+								message: 'Xóa thành công',
+								type: 'success',
+							}
+						},
+					})
+				}
 			/>
 		</PageLayout>
 	)

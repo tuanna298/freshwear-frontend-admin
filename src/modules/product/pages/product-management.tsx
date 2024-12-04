@@ -26,6 +26,11 @@ const ProductManagement = () => {
 		...table
 	} = useTable<Product, HttpError, Product>({
 		columns,
+		refineCoreProps: {
+			queryOptions: {
+				queryKey: ['product', 'list'],
+			},
+		},
 	})
 
 	return (
@@ -50,7 +55,18 @@ const ProductManagement = () => {
 			<DataTable<Product> table={table} />
 			<DataTablePagination<Product>
 				table={table}
-				handleDelete={(ids: string[]) => mutate({ resource: 'product', ids })}
+				handleDelete={(ids: string[]) =>
+					mutate({
+						resource: 'product',
+						ids,
+						successNotification: () => {
+							return {
+								message: 'Xóa thành công',
+								type: 'success',
+							}
+						},
+					})
+				}
 			/>
 		</PageLayout>
 	)

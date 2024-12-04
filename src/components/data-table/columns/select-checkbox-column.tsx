@@ -6,7 +6,7 @@ export const SelectCheckboxColumn = <T extends BaseDTO>(
 	disabled: boolean = false,
 ): ColumnDef<T> => ({
 	id: 'select',
-	size: 40,
+	size: 1,
 	header: ({ table }) => (
 		<Checkbox
 			disabled={disabled}

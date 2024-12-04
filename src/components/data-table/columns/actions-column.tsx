@@ -2,6 +2,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import { ReactNode } from 'react'
 
 import FormDialog, { FormDialogProps } from '@/components/custom/form-dialog'
+import { Dialog } from '@/components/ui/dialog'
 import { BaseDTO } from '@/shared/common/interfaces'
 import { BaseKey, useDelete, useUpdate } from '@refinedev/core'
 import { AlertDialog } from '../../ui/alert-dialog'
@@ -39,6 +40,12 @@ const ActionsColumn = <T extends BaseDTO>({
 			const deleteMutation = useDelete<T>({})
 			const { mutate: update, isLoading: isUpdating } = useUpdate({
 				resource,
+				successNotification() {
+					return {
+						message: 'Cập nhật thành công',
+						type: 'success',
+					}
+				},
 			})
 			return (
 				<>
@@ -60,6 +67,12 @@ const ActionsColumn = <T extends BaseDTO>({
 												deleteMutation.mutate({
 													resource,
 													id: original.id,
+													successNotification: () => {
+														return {
+															message: 'Xóa thành công',
+															type: 'success',
+														}
+													},
 												})
 											}
 											display={display}
@@ -72,26 +85,50 @@ const ActionsColumn = <T extends BaseDTO>({
 								update({
 									id: original.id,
 									values: data,
+									successNotification: () => {
+										return {
+											message: 'Cập nhật thành công',
+											type: 'success',
+										}
+									},
 								})
 							}
 							isSuccess={isUpdating}
 							{...formDialogProps}
 						/>
 					) : (
-						<AlertDialog>
-							<TableActionsDropdownMenu
-								onDelete={() =>
-									original.id &&
-									deleteMutation.mutate({
-										resource,
-										id: original.id,
-									})
-								}
-								onUpdate={() => update({ id: original.id })}
-								display={display}
-								actions={actions?.(original)}
-							/>
-						</AlertDialog>
+						<Dialog>
+							<AlertDialog>
+								<TableActionsDropdownMenu
+									onDelete={() =>
+										original.id &&
+										deleteMutation.mutate({
+											resource,
+											id: original.id,
+											successNotification: () => {
+												return {
+													message: 'Xóa thành công',
+													type: 'success',
+												}
+											},
+										})
+									}
+									onUpdate={() =>
+										update({
+											id: original.id,
+											successNotification: () => {
+												return {
+													message: 'Cập nhật thành công',
+													type: 'success',
+												}
+											},
+										})
+									}
+									display={display}
+									actions={actions?.(original)}
+								/>
+							</AlertDialog>
+						</Dialog>
 					)}
 				</>
 			)
