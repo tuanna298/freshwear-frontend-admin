@@ -77,24 +77,24 @@ const links = [
 		icon: <Package className={linkIconClassName} />,
 	},
 	{
-		label: 'Đánh giá',
-		href: REVIEW,
-		icon: <MessageSquareText className={linkIconClassName} />,
-	},
-	{
 		label: 'Đơn hàng',
 		href: ORDER,
 		icon: <NotepadText className={linkIconClassName} />,
 	},
 	{
-		label: 'Thanh toán',
-		href: PAYMENT,
-		icon: <HandCoins className={linkIconClassName} />,
-	},
-	{
 		label: 'Người dùng',
 		href: USER,
 		icon: <Users className={linkIconClassName} />,
+	},
+	{
+		label: 'Đánh giá',
+		href: REVIEW,
+		icon: <MessageSquareText className={linkIconClassName} />,
+	},
+	{
+		label: 'Thanh toán',
+		href: PAYMENT,
+		icon: <HandCoins className={linkIconClassName} />,
 	},
 ]
 

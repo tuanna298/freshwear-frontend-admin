@@ -29,8 +29,13 @@ export type NumberFieldProps = React.ComponentPropsWithoutRef<'label'> & {
  */
 export const NumberField: React.FC<NumberFieldProps> = ({
 	value,
-	locale,
-	options,
+	locale = 'vi-VN',
+	options = {
+		currency: 'VND',
+		currencyDisplay: 'symbol',
+		currencySign: 'standard',
+		style: 'currency',
+	},
 	...rest
 }) => {
 	const number = Number(value)

@@ -73,6 +73,7 @@ export const RESOURCE_MAP: Record<string, string> = {
 
 export const ACTION_MAP: Record<string, string> = {
 	create: 'Thêm mới',
+	edit: 'Chỉnh sửa',
 	update: 'Cập nhật',
 	delete: 'Xóa',
 	undefined: 'Thao tác',

@@ -1,5 +1,5 @@
 import { CaretSortIcon, CheckIcon } from '@radix-ui/react-icons'
-import { isArray, isEmpty } from 'lodash'
+import { isArray, isEmpty, isEqual } from 'lodash'
 import { Search, XIcon } from 'lucide-react'
 import {
 	ReactNode,
@@ -25,16 +25,18 @@ import {
 	CommandSeparator,
 } from './command'
 
-export type ComboxboxOption = {
-	value: Value | Value[]
+export type ComboxboxOption<T = Value> = {
+	value: T
 	label: ReactNode
 	disabled?: boolean
 }
+
 type Value = string | number | boolean | object
-export type ComboboxProps = {
-	options: ComboxboxOption[]
-	value?: Value | Value[] | null
-	onChange?: (value?: Value | Value[] | null) => void
+
+export type ComboboxProps<T = Value> = {
+	options: ComboxboxOption<T>[]
+	value?: T | T[] | null
+	onChange?: (value?: T | T[] | null) => void
 	mode?: 'multiple' | 'single'
 	allowClear?: boolean
 	showClearIcon?: boolean
@@ -48,8 +50,11 @@ export type ComboboxProps = {
 	disabled?: boolean
 	variant?: 'default' | 'filled'
 	requiredSelection?: boolean
+	compareKey?: keyof T
+	compareValue?: (a: T, b: T) => boolean
 }
-export function Combobox(props: ComboboxProps) {
+
+export function Combobox<T = Value>(props: ComboboxProps<T>) {
 	const {
 		options,
 		value: defaultValue,
@@ -67,23 +72,39 @@ export function Combobox(props: ComboboxProps) {
 		disabled,
 		variant = 'default',
 		requiredSelection = false,
+		compareKey,
+		compareValue,
 	} = props
+
 	const [open, setOpen] = useState(false)
-	const [value, setValue] = useState<Value | Value[] | null>()
+	const [value, setValue] = useState<T | T[] | null>()
 	const triggerRef = useRef<HTMLButtonElement>(null)
 	const [triggerWidth, setTriggerWidth] = useState<number>(200)
 
-	const handleSelect = (currentValue: Value) => {
-		let newValue: Value | Value[]
+	const isValueEqual = useCallback(
+		(a: T, b: T) => {
+			if (compareValue) return compareValue(a, b)
+			if (compareKey) return a[compareKey] === b[compareKey]
+			return isEqual(a, b)
+		},
+		[compareValue, compareKey],
+	)
+
+	const handleSelect = (currentValue: T) => {
+		let newValue: any
 		if (mode === 'multiple') {
 			newValue = Array.isArray(value)
-				? value.includes(currentValue)
-					? value.filter((v) => v !== currentValue)
+				? value.some((v) => isValueEqual(v, currentValue))
+					? value.filter((v) => !isValueEqual(v, currentValue))
 					: [...value, currentValue]
 				: [currentValue]
 		} else {
 			newValue =
-				currentValue === value ? (requiredSelection ? value : '') : currentValue
+				value && isValueEqual(currentValue, value as T)
+					? requiredSelection
+						? value
+						: null
+					: currentValue
 			setOpen(false)
 		}
 		setValue(newValue)
@@ -91,21 +112,23 @@ export function Combobox(props: ComboboxProps) {
 	}
 
 	const clearAll = () => {
-		setValue(mode === 'multiple' ? [] : '')
-		onChange?.(mode === 'multiple' ? [] : '')
+		setValue(mode === 'multiple' ? [] : null)
+		onChange?.(mode === 'multiple' ? [] : null)
 	}
+
 	const displayOption = useMemo(() => {
-		return options.find((option) => option.value === value)?.label
-	}, [options, value])
+		return options.find((option) => isValueEqual(option.value, value as T))
+			?.label
+	}, [options, value, isValueEqual])
 
 	const getDisplayValue = useCallback(() => {
 		if (mode === 'multiple' && Array.isArray(value)) {
 			const displayItems = value.map((v) => (
 				<div
-					key={typeof v === 'object' ? JSON.stringify(v) : v}
+					key={typeof v === 'object' ? JSON.stringify(v) : String(v)}
 					className="mr-1 mt-0.5 flex h-full items-center rounded border border-solid !bg-white p-1 pr-1"
 				>
-					{options.find((option) => option.value === v)?.label}
+					{options.find((option) => isValueEqual(option.value, v))?.label}
 					<span
 						onClick={(e) => {
 							e.stopPropagation()
@@ -143,7 +166,7 @@ export function Combobox(props: ComboboxProps) {
 				</span>
 			)
 		}
-	}, [mode, options, value])
+	}, [mode, options, value, isValueEqual])
 
 	const handleOpenChange = useCallback(
 		(newOpen: boolean) => {

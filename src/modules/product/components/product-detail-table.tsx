@@ -22,8 +22,8 @@ const ProductDetailTable = () => {
 	const material: Attribute = watch('material')
 	const brand: Attribute = watch('brand')
 	const name: string = watch('name')
+	const details: ProductDetail[] = watch('details') || []
 
-	const [productDetails, setProductDetails] = useState<ProductDetail[]>([])
 	const [sorting, setSorting] = useState<SortingState>([])
 
 	const handleUpdateProductDetail = (
@@ -31,15 +31,24 @@ const ProductDetailTable = () => {
 		field: keyof ProductDetail,
 		value: any,
 	) => {
-		setProductDetails((prev) =>
-			prev.map((detail) =>
-				detail.id === id ? { ...detail, [field]: value } : detail,
-			),
+		const details: ProductDetail[] = watch('details') || []
+
+		const updatedDetails = details.map((detail) =>
+			detail.id === id ? { ...detail, [field]: value } : detail,
 		)
+		setValue('details', updatedDetails)
 	}
 
 	const handleDeleteProductDetail = (id: string) => {
-		setProductDetails((prev) => prev.filter((detail) => detail.id !== id))
+		const details: ProductDetail[] = watch('details') || []
+
+		const updatedDetails = details.filter((detail) => detail.id !== id)
+		setValue('details', updatedDetails)
+
+		if (!updatedDetails.length) {
+			setValue('colors', [])
+			setValue('sizes', [])
+		}
 	}
 
 	const { onUpload, uploadedFiles, progresses, isUploading } = useBase64Upload({
@@ -49,6 +58,7 @@ const ProductDetailTable = () => {
 	const columns = useMemo(
 		() =>
 			ProductDetailColumns({
+				productName: name,
 				onUpdateProductDetail: handleUpdateProductDetail,
 				onDeleteProductDetail: handleDeleteProductDetail,
 				fileUploaderProps: {
@@ -58,11 +68,11 @@ const ProductDetailTable = () => {
 					uploadedFiles,
 				},
 			}),
-		[],
+		[name],
 	)
 
 	const table = useReactTable({
-		data: productDetails,
+		data: details,
 		columns,
 		state: {
 			sorting,
@@ -73,44 +83,53 @@ const ProductDetailTable = () => {
 	})
 
 	useEffect(() => {
-		if (!colors.length || !sizes.length) return
+		if (!colors.length || !sizes.length) {
+			if (details.length) {
+				setValue('details', [])
+			}
+			return
+		}
 
 		trigger().then((isValid) => {
 			if (isValid) {
-				const newProductDetails = colors.flatMap((color) =>
-					sizes.map((size) => ({
-						id: uniqueId(),
-						name: name + ` [${color.name} - ${size.name}]`,
-						size: size,
-						material: material,
-						color: color,
-						brand: brand,
-						image: '',
-						price: 0,
-						quantity: 0,
-					})),
+				// Tạo một map để tracking các detail hiện tại
+				const existingDetailsMap = new Map(
+					details.map((detail) => [
+						`${detail.color.id}-${detail.size.id}`,
+						detail,
+					]),
 				)
 
-				setProductDetails((prevDetails) => {
-					const areDetailsEqual =
-						prevDetails.length === newProductDetails.length &&
-						prevDetails.every(
-							(detail, index) =>
-								detail.color === newProductDetails[index].color &&
-								detail.size === newProductDetails[index].size,
-						)
+				const newDetails = colors.flatMap((color) =>
+					sizes.map((size) => {
+						const key = `${color.id}-${size.id}`
 
-					return areDetailsEqual ? prevDetails : newProductDetails
-				})
+						// Nếu detail đã tồn tại, giữ nguyên detail cũ
+						if (existingDetailsMap.has(key)) {
+							return existingDetailsMap.get(key)
+						}
+
+						// Nếu là detail mới, tạo detail với giá trị mặc định
+						return {
+							id: uniqueId(),
+							size: size,
+							material: material,
+							color: color,
+							brand: brand,
+							image: '',
+							price: 0,
+							quantity: 0,
+						}
+					}),
+				)
+
+				// Loại bỏ các details không còn phù hợp với colors/sizes mới
+				const filteredDetails = newDetails.filter(Boolean)
+
+				setValue('details', filteredDetails)
 			}
 		})
 	}, [colors, sizes, material, brand, trigger, name])
-
-	useEffect(() => {
-		if (productDetails.length) {
-			setValue('details', productDetails)
-		}
-	}, [productDetails])
 
 	return <DataTable<ProductDetail> table={table} />
 }

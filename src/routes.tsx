@@ -4,7 +4,11 @@ import GlobalSpinner from './components/custom/global-spinner'
 import { AttributeManagement } from './modules/attribute'
 import { AuthLayout, SignIn } from './modules/auth'
 import { ColorManagement } from './modules/color'
-import { ProductCreate, ProductManagement } from './modules/product'
+import {
+	ProductCreate,
+	ProductManagement,
+	ProductUpdate,
+} from './modules/product'
 import { ROUTE_PATHS } from './shared/common/constants'
 import { AppLayout, ProtectedLayout, PublicLayout } from './shared/layouts'
 
@@ -98,6 +102,14 @@ export default () => (
 					element={
 						<Suspense>
 							<ProductCreate />
+						</Suspense>
+					}
+				/>
+				<Route
+					path={PRODUCT + '/edit/:id?'}
+					element={
+						<Suspense>
+							<ProductUpdate />
 						</Suspense>
 					}
 				/>

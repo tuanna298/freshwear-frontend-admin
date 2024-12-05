@@ -3,15 +3,74 @@ import DataTableHeader from '@/components/data-table/data-table-header'
 import DataTablePagination from '@/components/data-table/data-table-paginator'
 import { Color } from '@/schemas/color.schema'
 import PageLayout from '@/shared/layouts/page'
-import { HttpError, useDeleteMany } from '@refinedev/core'
+import {
+	BaseKey,
+	HttpError,
+	useDelete,
+	useDeleteMany,
+	useUpdate,
+} from '@refinedev/core'
 import { useTable } from '@refinedev/react-table'
+import { useQueryClient } from '@tanstack/react-query'
 import { useMemo } from 'react'
 import { ColorColumns } from '../components/color-column'
 import ColorDialog from '../components/color-dialog'
 
 const ColorManagement = () => {
+	const queryClient = useQueryClient()
+
 	const { mutate } = useDeleteMany()
-	const columns = useMemo(() => ColorColumns(), [])
+
+	const deleteMutation = useDelete()
+	const update = useUpdate({
+		resource: 'color',
+		successNotification() {
+			return {
+				message: 'Cập nhật thành công',
+				type: 'success',
+			}
+		},
+	})
+	const onUpdate = (data: Color) =>
+		update.mutate(
+			{
+				id: data.id,
+				values: data,
+			},
+			{
+				onSuccess() {
+					queryClient.invalidateQueries(['color', 'list'])
+				},
+			},
+		)
+	const onDelete = (id: BaseKey) =>
+		deleteMutation.mutate(
+			{
+				resource: 'color',
+				id,
+				successNotification() {
+					return {
+						message: 'Xóa thành công',
+						type: 'success',
+					}
+				},
+			},
+			{
+				onSuccess() {
+					queryClient.invalidateQueries(['color', 'list'])
+				},
+			},
+		)
+
+	const columns = useMemo(
+		() =>
+			ColorColumns({
+				onDelete,
+				onSubmit: onUpdate,
+				isSuccess: update.isSuccess,
+			}),
+		[update.isSuccess],
+	)
 
 	const {
 		refineCore: { tableQuery, setFilters },

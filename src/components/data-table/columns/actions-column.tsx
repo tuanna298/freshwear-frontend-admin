@@ -4,12 +4,11 @@ import { ReactNode } from 'react'
 import FormDialog, { FormDialogProps } from '@/components/custom/form-dialog'
 import { Dialog } from '@/components/ui/dialog'
 import { BaseDTO } from '@/shared/common/interfaces'
-import { BaseKey, useDelete, useUpdate } from '@refinedev/core'
+import { BaseKey } from '@refinedev/core'
 import { AlertDialog } from '../../ui/alert-dialog'
 import TableActionsDropdownMenu from '../dropdown-menu/table-actions-dropdown-menu'
 
 type ActionColumnParams<T extends BaseDTO> = {
-	resource: string
 	formDialogProps?: Omit<FormDialogProps<T>, 'id'>
 
 	/** display or hidden action item */
@@ -17,19 +16,20 @@ type ActionColumnParams<T extends BaseDTO> = {
 		update?: boolean
 		delete?: boolean
 	}
-	onUpdate?: (id: BaseKey) => void
+	onUpdate?: (row: T) => void
+	onDelete?: (id: BaseKey) => void
 	actions?: (document: T) => ReactNode
 }
 
 /** An example actions menu for data table */
 const ActionsColumn = <T extends BaseDTO>({
-	resource,
 	formDialogProps,
 	display = {
 		update: true,
 		delete: true,
 	},
 	onUpdate,
+	onDelete,
 	actions,
 }: ActionColumnParams<T>): ColumnDef<T> => {
 	return {
@@ -37,16 +37,6 @@ const ActionsColumn = <T extends BaseDTO>({
 		enableHiding: false,
 		size: 100,
 		cell: ({ row: { original } }) => {
-			const deleteMutation = useDelete<T>({})
-			const { mutate: update, isLoading: isUpdating } = useUpdate({
-				resource,
-				successNotification() {
-					return {
-						message: 'Cập nhật thành công',
-						type: 'success',
-					}
-				},
-			})
 			return (
 				<>
 					{formDialogProps ? (
@@ -61,69 +51,24 @@ const ActionsColumn = <T extends BaseDTO>({
 								triggerContext: (
 									<AlertDialog>
 										<TableActionsDropdownMenu
-											onUpdate={() => onUpdate?.(original.id as BaseKey)}
-											onDelete={() =>
-												original.id &&
-												deleteMutation.mutate({
-													resource,
-													id: original.id,
-													successNotification: () => {
-														return {
-															message: 'Xóa thành công',
-															type: 'success',
-														}
-													},
-												})
-											}
+											onUpdate={() => onUpdate?.(original)}
+											onDelete={() => onDelete?.(original.id as BaseKey)}
 											display={display}
 											actions={actions?.(original)}
 										/>
 									</AlertDialog>
 								),
 							}}
-							onSubmit={(data) =>
-								update({
-									id: original.id,
-									values: data,
-									successNotification: () => {
-										return {
-											message: 'Cập nhật thành công',
-											type: 'success',
-										}
-									},
-								})
-							}
-							isSuccess={isUpdating}
+							onSubmit={(data) => formDialogProps?.onSubmit?.(data)}
+							isSuccess={formDialogProps?.isSuccess}
 							{...formDialogProps}
 						/>
 					) : (
 						<Dialog>
 							<AlertDialog>
 								<TableActionsDropdownMenu
-									onDelete={() =>
-										original.id &&
-										deleteMutation.mutate({
-											resource,
-											id: original.id,
-											successNotification: () => {
-												return {
-													message: 'Xóa thành công',
-													type: 'success',
-												}
-											},
-										})
-									}
-									onUpdate={() =>
-										update({
-											id: original.id,
-											successNotification: () => {
-												return {
-													message: 'Cập nhật thành công',
-													type: 'success',
-												}
-											},
-										})
-									}
+									onUpdate={() => onUpdate?.(original)}
+									onDelete={() => onDelete?.(original.id as BaseKey)}
 									display={display}
 									actions={actions?.(original)}
 								/>

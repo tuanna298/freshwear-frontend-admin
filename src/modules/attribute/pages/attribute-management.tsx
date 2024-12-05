@@ -4,13 +4,22 @@ import DataTablePagination from '@/components/data-table/data-table-paginator'
 import { Attribute } from '@/schemas/attribute.schema'
 import { RESOURCE_MAP } from '@/shared/common/constants'
 import PageLayout from '@/shared/layouts/page'
-import { HttpError, useDeleteMany, useResource } from '@refinedev/core'
+import {
+	BaseKey,
+	HttpError,
+	useDelete,
+	useDeleteMany,
+	useResource,
+	useUpdate,
+} from '@refinedev/core'
 import { useTable } from '@refinedev/react-table'
+import { useQueryClient } from '@tanstack/react-query'
 import { useMemo } from 'react'
 import { AttributeColumns } from '../components/attribute-column'
 import AttributeDialog from '../components/attribute-dialog'
 
 const AttributeManagement = () => {
+	const queryClient = useQueryClient()
 	const { mutate } = useDeleteMany()
 
 	const { resource } = useResource()
@@ -19,9 +28,55 @@ const AttributeManagement = () => {
 		throw new Error('Resource not found')
 	}
 
+	const deleteMutation = useDelete()
+	const update = useUpdate({
+		resource: resource.name,
+		successNotification() {
+			return {
+				message: 'Cập nhật thành công',
+				type: 'success',
+			}
+		},
+	})
+	const onUpdate = (data: Attribute) =>
+		update.mutate(
+			{
+				id: data.id,
+				values: data,
+			},
+			{
+				onSuccess() {
+					queryClient.invalidateQueries([resource.name, 'list'])
+				},
+			},
+		)
+	const onDelete = (id: BaseKey) =>
+		deleteMutation.mutate(
+			{
+				resource: resource.name,
+				id,
+				successNotification() {
+					return {
+						message: 'Xóa thành công',
+						type: 'success',
+					}
+				},
+			},
+			{
+				onSuccess() {
+					queryClient.invalidateQueries([resource.name, 'list'])
+				},
+			},
+		)
+
 	const columns = useMemo(
-		() => AttributeColumns({ resource: resource.name }),
-		[resource],
+		() =>
+			AttributeColumns({
+				onDelete,
+				onSubmit: onUpdate,
+				isSuccess: update.isSuccess,
+			}),
+		[resource, update.isSuccess],
 	)
 
 	const {
@@ -29,6 +84,11 @@ const AttributeManagement = () => {
 		...table
 	} = useTable<Attribute, HttpError, Attribute>({
 		columns,
+		refineCoreProps: {
+			queryOptions: {
+				queryKey: [resource.name, 'list'],
+			},
+		},
 	})
 
 	const resourceLabel = RESOURCE_MAP[resource?.name as string].toLowerCase()

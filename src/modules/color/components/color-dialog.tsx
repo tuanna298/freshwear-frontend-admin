@@ -2,9 +2,11 @@ import CreateButton from '@/components/custom/create-button'
 import FormDialog from '@/components/custom/form-dialog'
 import { Color, colorSchema } from '@/schemas/color.schema'
 import { useCreate } from '@refinedev/core'
+import { useQueryClient } from '@tanstack/react-query'
 import ColorForm from './color-form'
 
 const ColorDialog = () => {
+	const queryClient = useQueryClient()
 	const create = useCreate<Color>({
 		resource: 'color',
 		successNotification: () => ({
@@ -13,7 +15,15 @@ const ColorDialog = () => {
 		}),
 	})
 
-	const onSubmit = (data: Color) => create.mutate({ values: data })
+	const onSubmit = (data: Color) =>
+		create.mutate(
+			{ values: data },
+			{
+				onSuccess() {
+					queryClient.invalidateQueries(['color', 'list'])
+				},
+			},
+		)
 
 	return (
 		<FormDialog<Color>

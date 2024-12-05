@@ -5,10 +5,20 @@ import DataTableColumnHeader from '@/components/data-table/data-table-column-hea
 import { Badge } from '@/components/ui/badge'
 import { getContrastColor } from '@/lib/utils'
 import { Color, colorSchema } from '@/schemas/color.schema'
+import { BaseKey } from '@refinedev/core'
 import { ColumnDef } from '@tanstack/react-table'
 import ColorForm from './color-form'
 
-export const ColorColumns = (): ColumnDef<Color>[] => {
+interface ColorColumnsProps {
+	onDelete: (id: BaseKey) => void
+	onSubmit: (data: Color) => void
+	isSuccess: boolean
+}
+export const ColorColumns = ({
+	onDelete,
+	onSubmit,
+	isSuccess,
+}: ColorColumnsProps): ColumnDef<Color>[] => {
 	return [
 		SelectCheckboxColumn<Color>(),
 		IndexColumn<Color>(),
@@ -41,14 +51,16 @@ export const ColorColumns = (): ColumnDef<Color>[] => {
 			},
 		},
 		ActionsColumn<Color>({
-			resource: 'color',
 			formDialogProps: {
 				schema: colorSchema,
 				children: <ColorForm mode="update" />,
 				className: 'h-fit',
 				checkDirtyFields: false,
 				title: 'Cập nhật màu sắc',
+				onSubmit,
+				isSuccess,
 			},
+			onDelete,
 		}),
 	]
 }

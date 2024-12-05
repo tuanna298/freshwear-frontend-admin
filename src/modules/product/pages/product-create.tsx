@@ -4,7 +4,7 @@ import PageLayout from '@/shared/layouts/page'
 import { useCreate, useNavigation } from '@refinedev/core'
 import { useQueryClient } from '@tanstack/react-query'
 import { omit } from 'lodash'
-import ProductForm from '../components/product-form'
+import ProductCreateForm from '../components/product-create-form'
 
 const ProductCreate = () => {
 	const queryClient = useQueryClient()
@@ -35,22 +35,20 @@ const ProductCreate = () => {
 				schema={productSchema}
 				transformSchema={productSchema.transform((data) => {
 					return {
-						...data,
-						details: {
-							create: data.details?.map((detail) => ({
-								...omit(detail, ['id', 'brand', 'material', 'color', 'size']),
-								brand_id: detail.brand.id,
-								material_id: detail.material.id,
-								color_id: detail.color.id,
-								size_id: detail.size.id,
-							})),
-						},
+						...omit(data, ['brand', 'material']),
+						brand_id: data?.brand?.id,
+						material_id: data?.material?.id,
+						details: data.details?.map((detail) => ({
+							...omit(detail, ['id', 'color', 'size']),
+							color_id: detail.color.id,
+							size_id: detail.size.id,
+						})),
 					}
 				})}
 				onSubmit={onSubmit}
 				className="flex flex-col gap-5"
 			>
-				<ProductForm />
+				<ProductCreateForm />
 			</FormContainer>
 		</PageLayout>
 	)

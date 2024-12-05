@@ -11,8 +11,6 @@ export const productDetailSchema = z.object({
 	quantity: z.number(),
 	color: colorSchema,
 	size: attributeSchema,
-	material: attributeSchema,
-	brand: attributeSchema,
 })
 
 export const productSchema = z.object({
@@ -29,6 +27,8 @@ export const productSchema = z.object({
 		.min(1, 'Vui lòng nhập tên sản phẩm'),
 	description: z.string().optional().nullable(),
 	thumbnail: z.string().optional().nullable(),
+	brand: attributeSchema.optional().nullable(),
+	material: attributeSchema.optional().nullable(),
 	details: z.array(productDetailSchema).optional().nullable().default([]),
 })
 

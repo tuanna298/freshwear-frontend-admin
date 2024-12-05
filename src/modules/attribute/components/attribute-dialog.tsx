@@ -3,9 +3,12 @@ import FormDialog from '@/components/custom/form-dialog'
 import { Attribute, attributeSchema } from '@/schemas/attribute.schema'
 import { RESOURCE_MAP } from '@/shared/common/constants'
 import { useCreate, useResource } from '@refinedev/core'
+import { useQueryClient } from '@tanstack/react-query'
 import AttributeForm from './attribute-form'
 
 const AttributeDialog = () => {
+	const queryClient = useQueryClient()
+
 	const { resource } = useResource()
 
 	if (!resource) {
@@ -22,7 +25,15 @@ const AttributeDialog = () => {
 		}),
 	})
 
-	const onSubmit = (data: Attribute) => create.mutate({ values: data })
+	const onSubmit = (data: Attribute) =>
+		create.mutate(
+			{ values: data },
+			{
+				onSuccess() {
+					queryClient.invalidateQueries([resource.name, 'list'])
+				},
+			},
+		)
 
 	return (
 		<FormDialog<Attribute>

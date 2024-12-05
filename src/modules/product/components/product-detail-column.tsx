@@ -1,3 +1,4 @@
+import { CurrencyInput } from '@/components/custom/currency-input'
 import { FileUploader } from '@/components/custom/file-uploader'
 import { IndexColumn } from '@/components/data-table/columns/index-column'
 import DataTableColumnHeader from '@/components/data-table/data-table-column-header'
@@ -9,6 +10,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import { Trash } from 'lucide-react'
 
 interface ProductDetailColumnProps {
+	productName: string
 	onUpdateProductDetail: (
 		id: string,
 		field: keyof ProductDetail,
@@ -27,6 +29,7 @@ export const ProductDetailColumns = ({
 	onUpdateProductDetail,
 	onDeleteProductDetail,
 	fileUploaderProps,
+	productName,
 }: ProductDetailColumnProps): ColumnDef<ProductDetail>[] => {
 	return [
 		IndexColumn<ProductDetail>(),
@@ -34,7 +37,11 @@ export const ProductDetailColumns = ({
 			accessorKey: 'name',
 			meta: 'Tên',
 			header: (props) => <DataTableColumnHeader title="Tên" {...props} />,
-			cell: ({ row }) => row.getValue('name'),
+			cell: ({ row }) => (
+				<span>
+					{productName} [{row.original.color?.name} - {row.original.size?.name}]
+				</span>
+			),
 		},
 		{
 			accessorKey: 'quantity',
@@ -60,15 +67,10 @@ export const ProductDetailColumns = ({
 			meta: 'Giá',
 			header: (props) => <DataTableColumnHeader title="Giá" {...props} />,
 			cell: ({ row }) => (
-				<Input
-					type="number"
-					value={row.getValue('price')}
-					onChange={(e) =>
-						onUpdateProductDetail(
-							row.original.id!,
-							'price',
-							Number(e.target.value),
-						)
+				<CurrencyInput
+					initialValue={row.getValue('price')}
+					onCallback={(realValue: number) =>
+						onUpdateProductDetail(row.original.id!, 'price', realValue)
 					}
 					min={0}
 				/>

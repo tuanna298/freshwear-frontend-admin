@@ -9,5 +9,9 @@ const ProductCreate = lazy(async () => {
 	await new Promise((r) => setTimeout(r, 300))
 	return import('./pages/product-create')
 })
+const ProductUpdate = lazy(async () => {
+	await new Promise((r) => setTimeout(r, 300))
+	return import('./pages/product-update')
+})
 
-export { ProductCreate, ProductManagement }
+export { ProductCreate, ProductManagement, ProductUpdate }

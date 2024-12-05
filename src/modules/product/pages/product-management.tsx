@@ -4,22 +4,45 @@ import DataTableHeader from '@/components/data-table/data-table-header'
 import DataTablePagination from '@/components/data-table/data-table-paginator'
 import { Product } from '@/schemas/product.schema'
 import PageLayout from '@/shared/layouts/page'
-import {
-	BaseKey,
-	HttpError,
-	useDeleteMany,
-	useNavigation,
-} from '@refinedev/core'
+import { BaseKey, HttpError, useDelete, useDeleteMany } from '@refinedev/core'
 import { useTable } from '@refinedev/react-table'
+import { useQueryClient } from '@tanstack/react-query'
 import { useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { ProductColumns } from '../components/product-column'
 
 const ProductManagement = () => {
+	const queryClient = useQueryClient()
 	const { mutate } = useDeleteMany()
-	const { edit } = useNavigation()
-	const onUpdate = (id: BaseKey) => edit('product', id)
+	const navigate = useNavigate()
+	const deleteMutation = useDelete<Product>()
 
-	const columns = useMemo(() => ProductColumns({ onUpdate }), [])
+	const onUpdate = (row: Product) =>
+		navigate(`/product/edit/${row.id}`, {
+			state: {
+				productData: row,
+			},
+		})
+	const onDelete = (id: BaseKey) =>
+		deleteMutation.mutate(
+			{
+				resource: 'product',
+				id,
+				successNotification: () => {
+					return {
+						message: 'Xóa thành công',
+						type: 'success',
+					}
+				},
+			},
+			{
+				onSuccess() {
+					queryClient.invalidateQueries(['product', 'list'])
+				},
+			},
+		)
+
+	const columns = useMemo(() => ProductColumns({ onUpdate, onDelete }), [])
 
 	const {
 		refineCore: { tableQuery, setFilters },

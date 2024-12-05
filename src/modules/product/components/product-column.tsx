@@ -12,7 +12,8 @@ import { BaseKey } from '@refinedev/core'
 import { ColumnDef } from '@tanstack/react-table'
 
 interface ProductColumnsProps {
-	onUpdate: (id: BaseKey) => void
+	onUpdate: (row: Product) => void
+	onDelete: (id: BaseKey) => void
 }
 
 const renderQuantity = (product: Product) => {
@@ -117,6 +118,7 @@ const renderColor = (product: Product) => {
 
 export const ProductColumns = ({
 	onUpdate,
+	onDelete,
 }: ProductColumnsProps): ColumnDef<Product>[] => {
 	return [
 		SelectCheckboxColumn<Product>(),
@@ -193,8 +195,8 @@ export const ProductColumns = ({
 			enableSorting: false,
 		},
 		ActionsColumn<Product>({
-			resource: 'product',
 			onUpdate,
+			onDelete,
 		}),
 	]
 }

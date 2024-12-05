@@ -4,12 +4,9 @@ import { get } from 'lodash'
 export default {
 	defaultOptions: {
 		queries: {
-			refetchOnWindowFocus: false,
+			refetchOnWindowFocus: true,
 			refetchOnReconnect: true,
 			refetchOnMount: false,
-			retry: 0,
-			staleTime: 5000,
-			gcTime: 30000,
 		},
 		mutations: {
 			retry: (failureCount, error) => {
@@ -17,7 +14,6 @@ export default {
 					return true
 				return false
 			},
-			gcTime: 30000,
 		},
 	},
 	queryCache: new QueryCache({
