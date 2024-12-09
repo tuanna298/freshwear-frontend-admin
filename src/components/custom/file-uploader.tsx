@@ -392,7 +392,7 @@ function FilePreview({ file }: FilePreviewProps) {
 
 			{/* Image Preview */}
 			<motion.img
-				src={file.preview}
+				src={file.preview || '/images/placeholder.jpg'}
 				alt={file.name}
 				width={48}
 				height={48}

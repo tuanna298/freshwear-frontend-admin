@@ -137,7 +137,7 @@ export const ProductColumns = ({
 				return (
 					<div className="flex items-center gap-2">
 						<img
-							src={row.original.thumbnail!}
+							src={row.original.thumbnail! || '/images/placeholder.jpg'}
 							alt={row.original.name}
 							className="aspect-rectangle-vertical h-16"
 						/>

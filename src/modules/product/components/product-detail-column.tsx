@@ -1,12 +1,12 @@
-import { CurrencyInput } from '@/components/custom/currency-input'
 import { FileUploader } from '@/components/custom/file-uploader'
 import { IndexColumn } from '@/components/data-table/columns/index-column'
+import { SelectCheckboxColumn } from '@/components/data-table/columns/select-checkbox-column'
 import DataTableColumnHeader from '@/components/data-table/data-table-column-header'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { ProductDetail } from '@/schemas/product.schema'
 import { UploadedFile } from '@/types'
-import { ColumnDef } from '@tanstack/react-table'
+import { ColumnDef, Row } from '@tanstack/react-table'
 import { Trash } from 'lucide-react'
 
 interface ProductDetailColumnProps {
@@ -17,6 +17,11 @@ interface ProductDetailColumnProps {
 		value: any,
 	) => void
 	onDeleteProductDetail: (id: string) => void
+	onBatchUpdateProductDetails?: (
+		field: keyof ProductDetail,
+		value: any,
+		selectedRows: Row<ProductDetail>[],
+	) => void
 	fileUploaderProps: {
 		onUpload: (files: File[]) => Promise<UploadedFile<unknown>[] | undefined>
 		progresses: Record<string, number>
@@ -28,10 +33,12 @@ interface ProductDetailColumnProps {
 export const ProductDetailColumns = ({
 	onUpdateProductDetail,
 	onDeleteProductDetail,
+	onBatchUpdateProductDetails,
 	fileUploaderProps,
 	productName,
 }: ProductDetailColumnProps): ColumnDef<ProductDetail>[] => {
 	return [
+		SelectCheckboxColumn<ProductDetail>(),
 		IndexColumn<ProductDetail>(),
 		{
 			accessorKey: 'name',
@@ -47,17 +54,21 @@ export const ProductDetailColumns = ({
 			accessorKey: 'quantity',
 			meta: 'Số lượng',
 			header: (props) => <DataTableColumnHeader title="Số lượng" {...props} />,
-			cell: ({ row }) => (
+			cell: ({ row, table }) => (
 				<Input
 					type="number"
 					value={row.getValue('quantity')}
-					onChange={(e) =>
-						onUpdateProductDetail(
-							row.original.id!,
-							'quantity',
-							Number(e.target.value),
-						)
-					}
+					onChange={(e) => {
+						const value = Number(e.target.value)
+						const selectedRows = table.getSelectedRowModel().rows
+						// Nếu có batch update và có hàng được chọn
+						if (onBatchUpdateProductDetails && selectedRows.length > 0) {
+							onBatchUpdateProductDetails('quantity', value, selectedRows)
+						} else {
+							// Giữ nguyên logic cập nhật cũ
+							onUpdateProductDetail(row.original.id!, 'quantity', value)
+						}
+					}}
 					min={0}
 				/>
 			),
@@ -66,12 +77,20 @@ export const ProductDetailColumns = ({
 			accessorKey: 'price',
 			meta: 'Giá',
 			header: (props) => <DataTableColumnHeader title="Giá" {...props} />,
-			cell: ({ row }) => (
-				<CurrencyInput
-					initialValue={row.getValue('price')}
-					onCallback={(realValue: number) =>
-						onUpdateProductDetail(row.original.id!, 'price', realValue)
-					}
+			cell: ({ row, table }) => (
+				<Input
+					type="number"
+					value={row.getValue('price')}
+					onChange={(e) => {
+						const value = Number(e.target.value)
+						const selectedRows = table.getSelectedRowModel().rows
+						// Nếu có batch update và có hàng được chọn
+						if (onBatchUpdateProductDetails && selectedRows.length > 0) {
+							onBatchUpdateProductDetails('price', value, selectedRows)
+						} else {
+							onUpdateProductDetail(row.original.id!, 'price', value)
+						}
+					}}
 					min={0}
 				/>
 			),
@@ -104,16 +123,22 @@ export const ProductDetailColumns = ({
 					{...props}
 				/>
 			),
-			cell: ({ row }) => (
+			cell: ({ row, table }) => (
 				<FileUploader
 					maxSize={5 * 1024 * 1024}
 					{...fileUploaderProps}
 					placeholder={row.original.image!}
 					onUpload={async (files) => {
-						await fileUploaderProps.onUpload(files).then((result) => {
-							if (!result?.length) return
+						const result = await fileUploaderProps.onUpload(files)
+						if (!result?.length) return
+						const selectedRows = table.getSelectedRowModel().rows
+
+						// Nếu có batch update và có hàng được chọn
+						if (onBatchUpdateProductDetails && selectedRows.length > 0) {
+							onBatchUpdateProductDetails('image', result[0].url!, selectedRows)
+						} else {
 							onUpdateProductDetail(row.original.id!, 'image', result[0].url!)
-						})
+						}
 					}}
 					className="aspect-square h-48"
 					iconOnly
