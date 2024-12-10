@@ -79,16 +79,23 @@ const ProductManagement = () => {
 			<DataTablePagination<Product>
 				table={table}
 				handleDelete={(ids: string[]) =>
-					mutate({
-						resource: 'product',
-						ids,
-						successNotification: () => {
-							return {
-								message: 'Xóa thành công',
-								type: 'success',
-							}
+					mutate(
+						{
+							resource: 'product',
+							ids,
+							successNotification: () => {
+								return {
+									message: 'Xóa thành công',
+									type: 'success',
+								}
+							},
 						},
-					})
+						{
+							onSuccess() {
+								queryClient.refetchQueries(['product'])
+							},
+						},
+					)
 				}
 			/>
 		</PageLayout>

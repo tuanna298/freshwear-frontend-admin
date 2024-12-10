@@ -83,6 +83,12 @@ const AttributeManagement = () => {
 		refineCore: { tableQuery, setFilters },
 		...table
 	} = useTable<Attribute, HttpError, Attribute>({
+		refineCoreProps: {
+			resource: resource.name,
+			queryOptions: {
+				queryKey: [resource.name],
+			},
+		},
 		columns,
 		refineCoreProps: {
 			queryOptions: {
@@ -116,16 +122,23 @@ const AttributeManagement = () => {
 			<DataTablePagination<Attribute>
 				table={table}
 				handleDelete={(ids: string[]) =>
-					mutate({
-						resource: resource.name,
-						ids,
-						successNotification: () => {
-							return {
-								message: 'Xóa thành công',
-								type: 'success',
-							}
+					mutate(
+						{
+							resource: resource.name,
+							ids,
+							successNotification: () => {
+								return {
+									message: 'Xóa thành công',
+									type: 'success',
+								}
+							},
 						},
-					})
+						{
+							onSuccess() {
+								queryClient.refetchQueries([resource.name])
+							},
+						},
+					)
 				}
 			/>
 		</PageLayout>

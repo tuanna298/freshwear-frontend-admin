@@ -102,16 +102,23 @@ const ColorManagement = () => {
 			<DataTablePagination<Color>
 				table={table}
 				handleDelete={(ids: string[]) =>
-					mutate({
-						resource: 'color',
-						ids,
-						successNotification: () => {
-							return {
-								message: 'Xóa thành công',
-								type: 'success',
-							}
+					mutate(
+						{
+							resource: 'color',
+							ids,
+							successNotification: () => {
+								return {
+									message: 'Xóa thành công',
+									type: 'success',
+								}
+							},
 						},
-					})
+						{
+							onSuccess() {
+								queryClient.refetchQueries(['color'])
+							},
+						},
+					)
 				}
 			/>
 		</PageLayout>

@@ -1,4 +1,5 @@
 import DataTable from '@/components/data-table/data-table'
+import { AppToast } from '@/components/ui/toast'
 import { Attribute } from '@/schemas/attribute.schema'
 import { Color } from '@/schemas/color.schema'
 import { ProductDetail } from '@/schemas/product.schema'
@@ -6,6 +7,7 @@ import { useBase64Upload } from '@/shared/hooks/use-base64-upload'
 import {
 	getCoreRowModel,
 	getSortedRowModel,
+	Row,
 	SortingState,
 	useReactTable,
 } from '@tanstack/react-table'
@@ -51,6 +53,26 @@ const ProductDetailTable = () => {
 		}
 	}
 
+	const handleBatchUpdateProductDetails = (
+		field: keyof ProductDetail,
+		value: any,
+		selectedRows: Row<ProductDetail>[],
+	) => {
+		const details: ProductDetail[] = watch('details') || []
+
+		if (selectedRows.length === 0) return
+
+		const updatedDetails = details.map((detail) => {
+			// Chỉ update các detail được chọn
+			if (selectedRows.some((row) => row.original.id === detail.id)) {
+				return { ...detail, [field]: value }
+			}
+			return detail
+		})
+
+		setValue('details', updatedDetails)
+	}
+
 	const { onUpload, uploadedFiles, progresses, isUploading } = useBase64Upload({
 		mode: 'single',
 	})
@@ -61,6 +83,7 @@ const ProductDetailTable = () => {
 				productName: name,
 				onUpdateProductDetail: handleUpdateProductDetail,
 				onDeleteProductDetail: handleDeleteProductDetail,
+				onBatchUpdateProductDetails: handleBatchUpdateProductDetails,
 				fileUploaderProps: {
 					isUploading,
 					progresses,
@@ -127,6 +150,8 @@ const ProductDetailTable = () => {
 				const filteredDetails = newDetails.filter(Boolean)
 
 				setValue('details', filteredDetails)
+			} else {
+				AppToast.info('Vui lòng điền đầy đủ thông tin sản phẩm')
 			}
 		})
 	}, [colors, sizes, material, brand, trigger, name])

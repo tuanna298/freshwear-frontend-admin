@@ -21,7 +21,7 @@ export function UploadedFilesCard({ uploadedFiles }: UploadedFilesCardProps) {
 							{uploadedFiles.map((file) => (
 								<div key={file.key} className="relative aspect-video w-64">
 									<img
-										src={file.url}
+										src={file.url || '/images/placeholder.jpg'}
 										alt={file.name}
 										sizes="(min-width: 640px) 640px, 100vw"
 										loading="lazy"
