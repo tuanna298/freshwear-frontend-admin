@@ -4,8 +4,8 @@ import { BaseDTO } from '@/shared/common/interfaces'
 import DataTableColumnHeader from '../data-table-column-header'
 
 export const IndexColumn = <T extends BaseDTO>(): ColumnDef<T> => ({
-	accessorKey: 'created_at',
-	meta: 'created_at',
+	accessorKey: 'index',
+	meta: '#',
 	size: 1,
 	header: (props) => (
 		<DataTableColumnHeader className="text-center" title="#" {...props} />

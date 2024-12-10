@@ -4,6 +4,7 @@ import GlobalSpinner from './components/custom/global-spinner'
 import { AttributeManagement } from './modules/attribute'
 import { AuthLayout, SignIn } from './modules/auth'
 import { ColorManagement } from './modules/color'
+import { OrderManagement, OrderUpdate } from './modules/order'
 import {
 	ProductCreate,
 	ProductManagement,
@@ -110,6 +111,23 @@ export default () => (
 					element={
 						<Suspense>
 							<ProductUpdate />
+						</Suspense>
+					}
+				/>
+
+				<Route
+					path={ORDER}
+					element={
+						<Suspense>
+							<OrderManagement />
+						</Suspense>
+					}
+				/>
+				<Route
+					path={ORDER + '/edit/:id?'}
+					element={
+						<Suspense>
+							<OrderUpdate />
 						</Suspense>
 					}
 				/>

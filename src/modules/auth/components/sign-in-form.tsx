@@ -58,7 +58,6 @@ const SignInForm = () => {
 							placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;"
 							label="Mật khẩu"
 							tabIndex={2}
-							defaultValue=""
 							className="w-full"
 							required
 						/>
