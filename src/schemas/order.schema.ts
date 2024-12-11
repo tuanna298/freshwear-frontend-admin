@@ -10,6 +10,7 @@ export enum PaymentMethod {
 }
 
 export enum OrderStatus {
+	PLACE_ORDER = 'PLACE_ORDER',
 	PENDING = 'PENDING',
 	WAIT_FOR_CONFIRMATION = 'WAIT_FOR_CONFIRMATION',
 	WAIT_FOR_DELIVERY = 'WAIT_FOR_DELIVERY',
@@ -45,6 +46,13 @@ export const orderDetailSchema = z.object({
 		.nullable(),
 })
 
+export const orderHistorySchema = z.object({
+	id: z.string().optional().nullable(),
+	order_id: z.string(),
+	action_status: z.nativeEnum(OrderStatus),
+	note: z.string().optional().nullable(),
+})
+
 export const orderSchema = z.object({
 	id: z.string().optional().nullable(),
 	address: z.string(),
@@ -56,11 +64,13 @@ export const orderSchema = z.object({
 	method: z.nativeEnum(PaymentMethod).default(PaymentMethod.CASH),
 	status: z.nativeEnum(OrderStatus).default(OrderStatus.PENDING),
 	details: z.array(orderDetailSchema),
+	histories: z.array(orderHistorySchema),
 	user: userSchema.optional().nullable(),
 })
 
 export const orderDefaultValues = ZodUtil.getDefaults(orderSchema)
 export type Order = BaseDTO & z.infer<typeof orderSchema>
 export type OrderDetail = BaseDTO & z.infer<typeof orderDetailSchema>
+export type OrderHistory = BaseDTO & z.infer<typeof orderHistorySchema>
 
 export const ORDER_FIELDS = orderSchema.keyof().enum

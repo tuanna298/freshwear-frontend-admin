@@ -1,3 +1,4 @@
+import { OrderStatus } from '@/schemas/order.schema'
 import { QueryKey } from '@tanstack/react-query'
 import { AxiosRequestConfig } from 'axios'
 import { DebouncedFunc } from 'lodash'
@@ -28,3 +29,10 @@ export type OptionsConfigs = {
 }
 
 export type FetchConfigType<T> = AxiosRequestConfig<T> & { params?: object }
+
+export interface IEvent {
+	date: number | undefined
+	status: OrderStatus
+	loading?: boolean
+	note?: string | null
+}

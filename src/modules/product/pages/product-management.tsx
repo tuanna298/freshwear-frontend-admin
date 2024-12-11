@@ -20,7 +20,7 @@ const ProductManagement = () => {
 	const onUpdate = (row: Product) =>
 		navigate(`/product/edit/${row.id}`, {
 			state: {
-				productData: row,
+				data: row,
 			},
 		})
 	const onDelete = (id: BaseKey) =>

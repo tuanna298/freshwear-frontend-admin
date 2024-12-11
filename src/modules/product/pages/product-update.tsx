@@ -75,8 +75,7 @@ const ProductUpdate = () => {
 				})}
 				onSubmit={onSubmit}
 				formProps={{
-					defaultValues:
-						getDefaultValue(state?.productData) || productDefaultValues,
+					defaultValues: getDefaultValue(state?.data) || productDefaultValues,
 				}}
 				checkDirtyFields={false}
 			>
