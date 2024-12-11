@@ -1,4 +1,4 @@
-import { Skeleton } from '@/components/ui/skeleton'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import {
 	Order,
 	OrderHistory,
@@ -6,18 +6,17 @@ import {
 	OrderStatusLabel,
 } from '@/schemas/order.schema'
 import { IEvent } from '@/types'
-import { LoadingOutlined } from '@ant-design/icons'
-import { Steps } from 'antd'
-import Card from 'antd/es/card/Card'
-import Grid from 'antd/es/grid'
 import {
-	CircleAlert,
-	CircleCheckBig,
-	CircleHelp,
-	Package,
-	PackageCheck,
-	Truck,
-} from 'lucide-react'
+	AlertOutlined,
+	CarOutlined,
+	CheckOutlined,
+	DropboxOutlined,
+	FileProtectOutlined,
+	LoadingOutlined,
+	QuestionOutlined,
+} from '@ant-design/icons'
+import { Skeleton, Steps } from 'antd'
+import Grid from 'antd/es/grid'
 import { useEffect, useState } from 'react'
 
 interface OrderStepsProps {
@@ -55,18 +54,15 @@ const OrderSteps = ({ order }: OrderStepsProps) => {
 	}, [order])
 
 	return (
-		<Card
-			styles={{
-				body: {
-					padding: 0,
-				},
-			}}
-		>
-			<div
-				className="card-container"
+		<Card>
+			<CardHeader className="hidden" />
+
+			<CardContent
 				style={{
-					overflowX: 'auto',
+					overflow: 'auto',
 					whiteSpace: 'nowrap',
+					padding: 0,
+					maxWidth: 'calc(100vw - 350px)',
 				}}
 			>
 				{order && (
@@ -104,8 +100,8 @@ const OrderSteps = ({ order }: OrderStepsProps) => {
 						))}
 					</Steps>
 				)}
-				{!order && <Skeleton />}
-			</div>
+				{!order && <Skeleton paragraph={{ rows: 1 }} />}
+			</CardContent>
 		</Card>
 	)
 }
@@ -143,7 +139,6 @@ const getOrderStatusTimeline = (orderHistories: OrderHistory[]): IEvent[] => {
 			date: sortedOrderHistories[0]?.created_at
 				? new Date(sortedOrderHistories[0].created_at).getTime()
 				: undefined,
-			note: 'Order placed',
 		},
 	]
 
@@ -176,17 +171,17 @@ const getOrderStatusTimeline = (orderHistories: OrderHistory[]): IEvent[] => {
 const getIconByStatus = (status: OrderStatus) => {
 	switch (status) {
 		case OrderStatus.PLACE_ORDER:
-			return <Package />
+			return <DropboxOutlined />
 		case OrderStatus.WAIT_FOR_CONFIRMATION:
-			return <CircleHelp />
+			return <QuestionOutlined />
 		case OrderStatus.WAIT_FOR_DELIVERY:
-			return <CircleCheckBig />
+			return <CheckOutlined />
 		case OrderStatus.DELIVERING:
-			return <Truck />
+			return <CarOutlined />
 		case OrderStatus.COMPLETED:
-			return <PackageCheck />
+			return <FileProtectOutlined />
 		case OrderStatus.PENDING:
-			return <CircleAlert />
+			return <AlertOutlined />
 		default:
 			return null
 	}

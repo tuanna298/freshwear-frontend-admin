@@ -1,4 +1,3 @@
-import CreateButton from '@/components/custom/create-button'
 import DataTable from '@/components/data-table/data-table'
 import DataTableHeader from '@/components/data-table/data-table-header'
 import DataTablePagination from '@/components/data-table/data-table-paginator'
@@ -51,7 +50,6 @@ const OrderManagement = () => {
 					isLoading: tableQuery.isFetching,
 					onClick: () => tableQuery.refetch(),
 				}}
-				left={<CreateButton />}
 			/>
 			<DataTable<Order> table={table} />
 			<DataTablePagination<Order> table={table} />

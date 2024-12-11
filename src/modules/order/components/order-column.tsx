@@ -16,7 +16,9 @@ export const OrderColumns = ({
 	onUpdate,
 }: OrderColumnsProps): ColumnDef<Order>[] => {
 	return [
-		IndexColumn<Order>(),
+		IndexColumn<Order>({
+			enableSorting: false,
+		}),
 		{
 			accessorKey: 'code',
 			meta: 'Mã',

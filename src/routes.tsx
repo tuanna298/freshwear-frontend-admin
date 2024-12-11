@@ -10,6 +10,8 @@ import {
 	ProductManagement,
 	ProductUpdate,
 } from './modules/product'
+import { ReviewManagement } from './modules/review'
+import { UserManagement } from './modules/user'
 import { ROUTE_PATHS } from './shared/common/constants'
 import { AppLayout, ProtectedLayout, PublicLayout } from './shared/layouts'
 
@@ -53,10 +55,6 @@ export default () => (
 							{/* <Overview /> */}
 						</Suspense>
 					}
-				/>
-				<Route
-					path={USER}
-					element={<Suspense>{/* <Transaction /> */}</Suspense>}
 				/>
 				<Route
 					path={COLOR}
@@ -128,6 +126,23 @@ export default () => (
 					element={
 						<Suspense>
 							<OrderUpdate />
+						</Suspense>
+					}
+				/>
+
+				<Route
+					path={USER}
+					element={
+						<Suspense>
+							<UserManagement />
+						</Suspense>
+					}
+				/>
+				<Route
+					path={REVIEW}
+					element={
+						<Suspense>
+							<ReviewManagement />
 						</Suspense>
 					}
 				/>

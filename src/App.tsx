@@ -5,6 +5,8 @@ import routerBindings, {
 	UnsavedChangesNotifier,
 } from '@refinedev/react-router-v6'
 import { QueryClient } from '@tanstack/react-query'
+import { ConfigProvider } from 'antd'
+import vi_VN from 'antd/locale/vi_VN'
 import { BrowserRouter } from 'react-router-dom'
 import { Toaster } from './components/ui/sonner'
 import TooltipProvider from './components/ui/tooltip'
@@ -27,28 +29,49 @@ function App() {
 		>
 			<RefineKbarProvider>
 				<TooltipProvider delayDuration={80}>
-					<Refine
-						dataProvider={dataProvider}
-						resources={resources}
-						routerProvider={routerBindings}
-						authProvider={authProvider}
-						notificationProvider={notificationProvider}
-						options={{
-							syncWithLocation: true,
-							warnWhenUnsavedChanges: true,
-							useNewQueryKeys: true,
-							projectId: 'd0NzSK-Da1qaB-k1nokQ',
-							reactQuery: {
-								clientConfig: queryClient,
+					<ConfigProvider
+						locale={vi_VN}
+						theme={{
+							token: {
+								colorPrimary: 'hsl(240 5.9% 10%)',
+							},
+							components: {
+								Steps: {
+									iconSize: 48,
+									customIconSize: 48,
+									customIconFontSize: 30,
+									titleLineHeight: 32,
+									iconFontSize: 30,
+									descriptionMaxWidth: 180,
+									fontSize: 16,
+									fontSizeLG: 20,
+								},
 							},
 						}}
 					>
-						<AppRoutes />
-						<RefineKbar />
-						<UnsavedChangesNotifier />
-						<DocumentTitleHandler />
-						<Toaster />
-					</Refine>
+						<Refine
+							dataProvider={dataProvider}
+							resources={resources}
+							routerProvider={routerBindings}
+							authProvider={authProvider}
+							notificationProvider={notificationProvider}
+							options={{
+								syncWithLocation: true,
+								warnWhenUnsavedChanges: true,
+								useNewQueryKeys: true,
+								projectId: 'd0NzSK-Da1qaB-k1nokQ',
+								reactQuery: {
+									clientConfig: queryClient,
+								},
+							}}
+						>
+							<AppRoutes />
+							<RefineKbar />
+							<UnsavedChangesNotifier />
+							<DocumentTitleHandler />
+							<Toaster />
+						</Refine>
+					</ConfigProvider>
 				</TooltipProvider>
 			</RefineKbarProvider>
 		</BrowserRouter>

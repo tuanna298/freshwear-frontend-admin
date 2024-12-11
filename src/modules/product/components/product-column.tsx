@@ -122,7 +122,7 @@ export const ProductColumns = ({
 }: ProductColumnsProps): ColumnDef<Product>[] => {
 	return [
 		SelectCheckboxColumn<Product>(),
-		IndexColumn<Product>(),
+		IndexColumn<Product>({}),
 		{
 			accessorKey: 'code',
 			meta: 'Mã',

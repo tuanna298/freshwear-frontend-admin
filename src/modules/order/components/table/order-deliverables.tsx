@@ -45,9 +45,12 @@ const OrderDeliverables = ({ order }: OrderDeliverablesProps) => {
 
 			<CardContent className="h-full space-y-2 p-6">
 				<DataTable<OrderDetail> table={table} />
-				<div className="flex w-full items-center justify-end px-5">
-					<span className="mr-2 font-bold text-[#67be23]">TỔNG</span>
-					<NumberField className="font-bold" value={order?.total_money || 0} />
+				<div className="flex w-full items-center justify-end">
+					<span className="mr-2 text-2xl font-bold text-[#67be23]">TỔNG</span>
+					<NumberField
+						className="text-2xl font-bold"
+						value={order?.total_money || 0}
+					/>
 				</div>
 			</CardContent>
 		</Card>

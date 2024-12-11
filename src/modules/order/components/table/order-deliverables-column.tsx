@@ -9,7 +9,7 @@ interface OrderDetailColumnProps {}
 export const OrderDetailColumns =
 	({}: OrderDetailColumnProps): ColumnDef<OrderDetail>[] => {
 		return [
-			IndexColumn<OrderDetail>(),
+			IndexColumn<OrderDetail>({}),
 			{
 				accessorKey: 'name',
 				meta: 'Sản phẩm',

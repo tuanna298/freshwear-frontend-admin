@@ -90,7 +90,7 @@ export const changePasswordDefaultValues = ZodUtil.getDefaults(
 	changePasswordSchema._def.schema,
 )
 
-export type User = z.infer<typeof userSchema>
+export type User = BaseDTO & z.infer<typeof userSchema>
 export type SignInDto = z.infer<typeof signInSchema>
 export type UpdateProfileDto = BaseDTO & z.infer<typeof updateProfileSchema>
 export type ChangePasswordDto = z.infer<typeof changePasswordSchema>

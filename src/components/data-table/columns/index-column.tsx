@@ -3,7 +3,13 @@ import { ColumnDef } from '@tanstack/react-table'
 import { BaseDTO } from '@/shared/common/interfaces'
 import DataTableColumnHeader from '../data-table-column-header'
 
-export const IndexColumn = <T extends BaseDTO>(): ColumnDef<T> => ({
+interface IndexColumnProps {
+	enableSorting?: boolean
+}
+
+export const IndexColumn = <T extends BaseDTO>({
+	enableSorting,
+}: IndexColumnProps): ColumnDef<T> => ({
 	accessorKey: 'index',
 	meta: '#',
 	size: 1,
@@ -20,4 +26,5 @@ export const IndexColumn = <T extends BaseDTO>(): ColumnDef<T> => ({
 			? table.getPageCount() - pageIndex * pageSize - row.index
 			: pageIndex * pageSize + row.index + 1
 	},
+	enableSorting,
 })

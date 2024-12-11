@@ -21,7 +21,7 @@ export const ColorColumns = ({
 }: ColorColumnsProps): ColumnDef<Color>[] => {
 	return [
 		SelectCheckboxColumn<Color>(),
-		IndexColumn<Color>(),
+		IndexColumn<Color>({}),
 		{
 			accessorKey: 'name',
 			meta: 'Tên màu sắc',

@@ -19,7 +19,7 @@ export const AttributeColumns = ({
 	isSuccess,
 }: AttributeColumnsParams): ColumnDef<Attribute>[] => [
 	SelectCheckboxColumn<Attribute>(),
-	IndexColumn<Attribute>(),
+	IndexColumn<Attribute>({}),
 	{
 		accessorKey: 'name',
 		meta: 'Tên thuộc tính',

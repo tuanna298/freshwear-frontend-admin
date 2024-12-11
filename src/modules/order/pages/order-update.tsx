@@ -5,6 +5,7 @@ import { useNavigation } from '@refinedev/core'
 import { CheckCircle, CircleFadingArrowUp, Printer } from 'lucide-react'
 import { useEffect } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
+import OrderDescription from '../components/order-description'
 import OrderSteps from '../components/order-steps'
 import OrderDeliverables from '../components/table/order-deliverables'
 
@@ -26,13 +27,13 @@ const OrderUpdate = () => {
 
 	useEffect(() => {
 		if (!id) {
-			list('product')
+			list('order')
 		}
 	}, [id])
 
 	return (
 		<PageLayout
-			title="Chỉnh sửa sản phẩm"
+			title="Chi tiết đơn hàng"
 			wrapWithCard={false}
 			animated={true}
 			extra={
@@ -61,6 +62,9 @@ const OrderUpdate = () => {
 
 			{/* Order deliverables */}
 			<OrderDeliverables order={order} />
+
+			{/* order info */}
+			<OrderDescription order={order} />
 		</PageLayout>
 	)
 }

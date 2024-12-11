@@ -63,7 +63,9 @@ export default {
 		}
 
 		const response = await httpConfig.default[requestMethod](
-			`${url}?${stringify(query)}&${stringify(queryFilters)}`,
+			`${url}?${stringify(query)}&${stringify({
+				where: JSON.stringify(queryFilters),
+			})}`,
 			{
 				headers: headersFromMeta,
 			},
