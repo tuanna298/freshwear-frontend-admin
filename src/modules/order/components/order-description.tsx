@@ -107,10 +107,6 @@ const OrderDescription = ({ order }: OrderDescriptionProps) => {
 						<strong>Email</strong>: {user.email}
 					</div>
 					<div>
-						<strong>Ngày sinh</strong>:{' '}
-						<DateField value={dayjs(user.dob)} format="LL" />
-					</div>
-					<div>
 						<strong>Giới tính</strong>:{' '}
 						{user.gender === UserGender.MALE ? 'Nam' : 'Nữ'}
 					</div>

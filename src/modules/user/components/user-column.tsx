@@ -42,12 +42,6 @@ export const UserColumns = ({}: UserColumnsProps): ColumnDef<User>[] => {
 			cell: ({ row }) => row.original.email,
 		},
 		{
-			accessorKey: 'dob',
-			meta: 'Ngày sinh',
-			header: (props) => <DataTableColumnHeader title="Ngày sinh" {...props} />,
-			cell: ({ row }) => row.original.dob,
-		},
-		{
 			accessorKey: 'address',
 			meta: 'Địa chỉ',
 			header: (props) => <DataTableColumnHeader title="Địa chỉ" {...props} />,
