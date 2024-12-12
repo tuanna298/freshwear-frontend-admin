@@ -29,6 +29,7 @@ export enum OrderStatusLabel {
 	CANCELED = 'Đã hủy',
 	COMPLETED = 'Hoàn thành',
 	EXPIRED = 'Đã hết hạn',
+	PAYMENT_FAILED = 'Thanh toán thất bại',
 }
 
 export const orderDetailSchema = z.object({
