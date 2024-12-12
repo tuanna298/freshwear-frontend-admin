@@ -34,7 +34,6 @@ export const userSchema = z.object({
 		.min(1, 'Vui lòng nhập mật khẩu')
 		.optional(),
 	phone_number: z.string().optional().nullable(),
-	dob: z.coerce.date().optional().nullable(),
 	gender: z.nativeEnum(UserGender).optional().nullable(),
 	avatar: z.string().optional().nullable(),
 	address: z.string().optional().nullable(),
@@ -52,7 +51,6 @@ export const signInSchema = userSchema
 
 export const updateProfileSchema = userSchema.pick({
 	full_name: true,
-	dob: true,
 	phone_number: true,
 	gender: true,
 	address: true,
