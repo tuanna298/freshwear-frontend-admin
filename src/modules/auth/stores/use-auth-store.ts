@@ -6,6 +6,8 @@ import { persist } from 'zustand/middleware'
 export type AuthState = {
 	accessToken?: string
 	setAccessToken: (value?: string) => void
+	refreshToken?: string
+	setRefreshToken: (value?: string) => void
 	clear: () => void
 	profile?: User
 	setProfile: (value?: User) => void
@@ -13,6 +15,7 @@ export type AuthState = {
 
 export const defaultAuthStore = Object.freeze({
 	accessToken: undefined,
+	refreshToken: undefined,
 	profile: undefined,
 })
 
@@ -21,6 +24,7 @@ export const useAuthStore = create<AuthState>()(
 		(set) => ({
 			...defaultAuthStore,
 			setAccessToken: (value?: string) => set({ accessToken: value }),
+			setRefreshToken: (value?: string) => set({ refreshToken: value }),
 			setProfile: (value?: User) => set({ profile: value }),
 			clear: () => set({ ...defaultAuthStore }),
 		}),

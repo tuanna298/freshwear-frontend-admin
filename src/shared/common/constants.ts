@@ -6,6 +6,7 @@ export const API_PATHS = {
 	AUTH: {
 		BASE: '/auth',
 		SIGN_IN: '/sign-in',
+		REFRESH: '/refresh',
 		SIGN_OUT: '/sign-out',
 		ME: {
 			BASE: '/me',

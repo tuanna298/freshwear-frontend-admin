@@ -1,3 +1,4 @@
+import AuthHelper from '@/modules/auth/helpers/auth.helper'
 import { useAuthStore } from '@/modules/auth/stores/use-auth-store'
 import type { AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 import axios from 'axios'
@@ -6,7 +7,7 @@ import { API_PATHS, API_URL } from '../common/constants'
 import { loadProgressBar } from './nprogress.config'
 
 const {
-	AUTH: { SIGN_IN },
+	AUTH: { SIGN_IN, REFRESH },
 } = API_PATHS
 
 const http = axios.create({
@@ -34,7 +35,7 @@ axiosRetry(http, {
 http.interceptors.request.use(
 	function (config: InternalAxiosRequestConfig) {
 		const { accessToken } = useAuthStore.getState()
-		if (accessToken) {
+		if (accessToken && !config.url?.includes(REFRESH)) {
 			config.headers.Authorization = `Bearer ${accessToken}`
 		}
 		return config
@@ -53,11 +54,24 @@ http.interceptors.response.use(
 	},
 	async function (error) {
 		// Any status codes that falls outside the range of 2xx cause this function to trigger
+		const config = error?.config
+
+		if (error?.config?.url?.includes(REFRESH)) {
+			useAuthStore.getState().clear()
+			return error
+		}
+
 		if (
 			error?.response?.status === 401 &&
 			!error?.config?.url?.includes(SIGN_IN)
 		) {
-			useAuthStore.getState().clear()
+			const access_token = await AuthHelper.refreshTokenFn()
+			if (access_token) {
+				config.headers.Authorization = `Bearer ${access_token}`
+				return http(config)
+			} else {
+				useAuthStore.getState().clear()
+			}
 		}
 
 		return Promise.reject(error)

@@ -9,16 +9,17 @@ const authApi = await import('@/modules/auth/apis/auth.api')
 
 export default {
 	login: async ({ username, password }) => {
-		const { setAccessToken, clear } = useAuthStore.getState()
+		const { setAccessToken, setRefreshToken, clear } = useAuthStore.getState()
 		try {
 			const {
-				data: { access_token },
+				data: { access_token, refresh_token },
 			} = await authApi.default.signIn({
 				username,
 				password,
 			})
 
 			setAccessToken(access_token)
+			setRefreshToken(refresh_token)
 
 			return Promise.resolve({
 				success: true,
