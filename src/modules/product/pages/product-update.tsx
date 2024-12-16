@@ -8,7 +8,6 @@ import PageLayout from '@/shared/layouts/page'
 import { useNavigation, useUpdate } from '@refinedev/core'
 import { useQueryClient } from '@tanstack/react-query'
 import { omit, uniqBy } from 'lodash'
-import { useEffect } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
 import ProductUpdateForm from '../components/product-update-form'
 
@@ -49,11 +48,10 @@ const ProductUpdate = () => {
 			},
 		)
 
-	useEffect(() => {
-		if (!id) {
-			list('product')
-		}
-	}, [id])
+	if (!id) {
+		list('product')
+		return null
+	}
 
 	return (
 		<PageLayout title="Chỉnh sửa sản phẩm" wrapWithCard={false} animated={true}>

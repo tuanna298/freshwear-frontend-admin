@@ -27,7 +27,7 @@ export const OrderDetailColumns =
 								row.original.product_detail?.image ||
 								'assets/img/other/placeholder.jpg'
 							}
-							className="aspect-square size-[60xp] rounded-full lg:size-[108px]"
+							className="aspect-square size-[60xp] rounded-full object-cover object-top lg:size-[108px]"
 							alt="product-image"
 						/>
 
@@ -35,7 +35,10 @@ export const OrderDetailColumns =
 							<span className="text-2xl font-bold">
 								{row.original.product_detail?.product?.name}
 							</span>
-							<span>{row.original.product_detail?.product?.code}</span>
+							<span>
+								{row.original.product_detail?.color?.name} -{' '}
+								{row.original.product_detail?.size?.name}
+							</span>
 						</div>
 					</div>
 				),
@@ -70,10 +73,7 @@ export const OrderDetailColumns =
 				),
 				cell: ({ row }) => (
 					<div className="text-end">
-						<NumberField
-							className="font-bold"
-							value={row.original.product_detail?.price ?? 0}
-						/>
+						<NumberField className="font-bold" value={row.original.price} />
 					</div>
 				),
 				enableSorting: false,
@@ -92,10 +92,7 @@ export const OrderDetailColumns =
 					<div className="text-end">
 						<NumberField
 							className="font-bold"
-							value={
-								(row.original.quantity ?? 0) *
-								(row.original.product_detail?.price ?? 0)
-							}
+							value={(row.original.quantity ?? 0) * (row.original.price ?? 0)}
 						/>
 					</div>
 				),

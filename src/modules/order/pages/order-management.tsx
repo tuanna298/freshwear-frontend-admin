@@ -5,7 +5,7 @@ import { Order } from '@/schemas/order.schema'
 import PageLayout from '@/shared/layouts/page'
 import { HttpError } from '@refinedev/core'
 import { useTable } from '@refinedev/react-table'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { OrderColumns } from '../components/order-column'
 
@@ -26,12 +26,11 @@ const OrderManagement = () => {
 		...table
 	} = useTable<Order, HttpError, Order>({
 		columns,
-		refineCoreProps: {
-			queryOptions: {
-				queryKey: ['order', 'list'],
-			},
-		},
 	})
+
+	useEffect(() => {
+		tableQuery.refetch()
+	}, [])
 
 	return (
 		<PageLayout title="Quản lý hoá đơn" animated={true}>

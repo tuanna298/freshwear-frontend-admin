@@ -2,10 +2,14 @@ import { DateField } from '@/components/custom/date-field'
 import { NumberField } from '@/components/custom/number-field'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { UserGender } from '@/schemas/auth/user.schema'
-import { Order, OrderPayment, OrderStatusLabel } from '@/schemas/order.schema'
+import {
+	Order,
+	OrderPayment,
+	OrderStatusLabel,
+	PaymentMethod,
+} from '@/schemas/order.schema'
 import { Badge, Descriptions, DescriptionsProps, Empty } from 'antd'
 import dayjs from 'dayjs'
-import { capitalize } from 'lodash'
 
 interface OrderDescriptionProps {
 	order: Order
@@ -16,23 +20,23 @@ const PaymentList = ({ payments }: { payments: OrderPayment[] }) => (
 		{payments ? (
 			payments.map((payment) => (
 				<div key={payment.id}>
-					<NumberField value={payment.total_money} />
+					<NumberField value={payment.total} />
 					{' - '}
 					{payment.status === 'PENDING' ? (
-						<span>Unpaid</span>
+						<span>Chưa thanh toán</span>
 					) : (
 						<>
 							<DateField
 								value={dayjs(new Date(payment?.updated_at ?? ''))}
 								format="DD/MM/YYYY HH:MM"
 							/>
-							{payment.transactionCode}
+							{payment.transaction_code}
 						</>
 					)}
 				</div>
 			))
 		) : (
-			<span>Unpaid</span>
+			<span>Chưa thanh toán</span>
 		)}
 	</>
 )
@@ -60,13 +64,13 @@ const OrderDescription = ({ order }: OrderDescriptionProps) => {
 		},
 		{
 			key: '6',
-			label: 'Note',
+			label: 'Ghi chú',
 			span: 3,
 			children: note ?? 'N/A',
 		},
 		{
 			key: '7',
-			label: 'Total',
+			label: 'Tổng tiền',
 			children: <NumberField value={total_money ?? 0} />,
 		},
 		{
@@ -85,7 +89,9 @@ const OrderDescription = ({ order }: OrderDescriptionProps) => {
 			key: '12',
 			label: 'Phương thức thanh toán',
 			children: payments
-				?.map((payment) => capitalize(payment.method))
+				?.map((payment) =>
+					payment.method === PaymentMethod.CASH ? 'Tiền mặt' : 'Chuyển khoản',
+				)
 				.join(', '),
 		},
 		{
@@ -108,7 +114,11 @@ const OrderDescription = ({ order }: OrderDescriptionProps) => {
 					</div>
 					<div>
 						<strong>Giới tính</strong>:{' '}
-						{user.gender === UserGender.MALE ? 'Nam' : 'Nữ'}
+						{user.gender === UserGender.MALE
+							? 'Nam'
+							: user.gender === UserGender.FEMALE
+								? 'Nữ'
+								: 'Không xác định'}
 					</div>
 					<div>
 						<strong>Địa chỉ</strong>: {address || 'N/A'}

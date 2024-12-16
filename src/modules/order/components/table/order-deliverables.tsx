@@ -35,11 +35,11 @@ const OrderDeliverables = ({ order }: OrderDeliverablesProps) => {
 
 	return (
 		<Card>
-			<CardHeader className="flex flex-row justify-between">
-				<CardTitle className="text-5xl font-bold">Sản phẩm</CardTitle>
-				<Button className="flex gap-2">
+			<CardHeader className="flex flex-row justify-between pb-0">
+				<CardTitle className="text-4xl font-bold">Sản phẩm</CardTitle>
+				<Button className="!m-0 flex gap-2">
 					<SquareChartGantt />
-					Xem lịch sử hoá đơn
+					<span>Xem lịch sử hoá đơn</span>
 				</Button>
 			</CardHeader>
 

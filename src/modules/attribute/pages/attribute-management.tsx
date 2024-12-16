@@ -83,17 +83,9 @@ const AttributeManagement = () => {
 		refineCore: { tableQuery, setFilters },
 		...table
 	} = useTable<Attribute, HttpError, Attribute>({
-		refineCoreProps: {
-			resource: resource.name,
-			queryOptions: {
-				queryKey: [resource.name],
-			},
-		},
 		columns,
 		refineCoreProps: {
-			queryOptions: {
-				queryKey: [resource.name, 'list'],
-			},
+			resource: resource.name,
 		},
 	})
 

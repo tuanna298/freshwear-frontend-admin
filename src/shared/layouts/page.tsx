@@ -1,6 +1,5 @@
 import AppBreadcrumb from '@/components/custom/app-breadcrumb'
 import { Card, CardContent } from '@/components/ui/card'
-import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 import { motion } from 'framer-motion'
 
@@ -11,6 +10,7 @@ type Props = {
 	className?: string
 	animated?: boolean
 	wrapWithCard?: boolean
+	breadcrumb?: boolean
 	extra?: React.ReactNode
 }
 
@@ -23,11 +23,12 @@ const pageTransition = {
 
 const PageLayout = ({
 	children,
-	title = <Skeleton className="h-9 w-24 rounded-full bg-primary-muted" />,
-	description = <Skeleton className="h-6 w-96 rounded-full bg-primary-muted" />,
+	title,
+	description,
 	className,
 	animated = false,
 	wrapWithCard = true,
+	breadcrumb = true,
 	extra,
 }: Props) => {
 	const MotionComponent = animated ? motion.div : 'div'
@@ -44,7 +45,7 @@ const PageLayout = ({
 				{extra}
 			</div>
 			<div className={cn('flex h-full flex-col gap-3', className)}>
-				<AppBreadcrumb />
+				{breadcrumb && <AppBreadcrumb />}
 
 				{wrapWithCard ? (
 					<Card className="h-full">

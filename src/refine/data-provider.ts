@@ -74,7 +74,7 @@ export default {
 		const content = response.data
 
 		const data = content.data
-		const totalElements = content.pageInfo.total
+		const totalElements = content?.pageInfo?.total
 		const startIndex =
 			pageSize !== undefined && current !== undefined
 				? (current + 1) * pageSize

@@ -118,7 +118,7 @@ const getOrderStatusTimeline = (orderHistories: OrderHistory[]): IEvent[] => {
 		OrderStatus.CANCELED,
 	]
 
-	// If there's no 'CANCELED' status in orderHistories, remove it from statusList
+	// If there's 'CANCELED' status in orderHistories, remove it from statusList
 	if (
 		!orderHistories.some(
 			(history) => history.action_status === OrderStatus.CANCELED,
@@ -139,21 +139,23 @@ const getOrderStatusTimeline = (orderHistories: OrderHistory[]): IEvent[] => {
 			date: sortedOrderHistories[0]?.created_at
 				? new Date(sortedOrderHistories[0].created_at).getTime()
 				: undefined,
+			note: 'Đơn hàng đã được tạo',
 		},
 	]
 
 	let remainingStatus = [...statusList]
 
 	sortedOrderHistories.forEach((history, index) => {
-		const { actionStatus, created_at, note } = history
+		const { action_status, created_at, note } = history
 
 		const isLastHistory = index === sortedOrderHistories.length - 1
 
-		const statusIndex = remainingStatus.indexOf(actionStatus)
+		const statusIndex = remainingStatus.indexOf(action_status)
+
 		if (statusIndex !== -1) {
 			remainingStatus = remainingStatus.slice(statusIndex + 1)
 			eventList.push({
-				status: actionStatus,
+				status: action_status,
 				date: created_at ? new Date(created_at).getTime() : undefined,
 				loading: isLastHistory,
 				note,

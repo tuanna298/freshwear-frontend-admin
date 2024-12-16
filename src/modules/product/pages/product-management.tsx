@@ -7,7 +7,7 @@ import PageLayout from '@/shared/layouts/page'
 import { BaseKey, HttpError, useDelete, useDeleteMany } from '@refinedev/core'
 import { useTable } from '@refinedev/react-table'
 import { useQueryClient } from '@tanstack/react-query'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ProductColumns } from '../components/product-column'
 
@@ -23,6 +23,7 @@ const ProductManagement = () => {
 				data: row,
 			},
 		})
+
 	const onDelete = (id: BaseKey) =>
 		deleteMutation.mutate(
 			{
@@ -49,12 +50,11 @@ const ProductManagement = () => {
 		...table
 	} = useTable<Product, HttpError, Product>({
 		columns,
-		refineCoreProps: {
-			queryOptions: {
-				queryKey: ['product', 'list'],
-			},
-		},
 	})
+
+	useEffect(() => {
+		tableQuery.refetch()
+	}, [])
 
 	return (
 		<PageLayout title="Quản lý sản phẩm" animated={true}>

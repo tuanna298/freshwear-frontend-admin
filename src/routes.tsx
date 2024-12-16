@@ -4,6 +4,8 @@ import GlobalSpinner from './components/custom/global-spinner'
 import { AttributeManagement } from './modules/attribute'
 import { AuthLayout, SignIn } from './modules/auth'
 import { ColorManagement } from './modules/color'
+import { Dashboard } from './modules/dashboard'
+import { DashboardContextProvider } from './modules/dashboard/context'
 import { OrderManagement, OrderUpdate } from './modules/order'
 import {
 	ProductCreate,
@@ -52,7 +54,9 @@ export default () => (
 					index
 					element={
 						<Suspense fallback={<GlobalSpinner />}>
-							{/* <Overview /> */}
+							<DashboardContextProvider>
+								<Dashboard />
+							</DashboardContextProvider>
 						</Suspense>
 					}
 				/>

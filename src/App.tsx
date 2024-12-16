@@ -34,6 +34,8 @@ function App() {
 						theme={{
 							token: {
 								colorPrimary: 'hsl(240 5.9% 10%)',
+								fontFamily:
+									'ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
 							},
 							components: {
 								Steps: {
@@ -56,7 +58,7 @@ function App() {
 							authProvider={authProvider}
 							notificationProvider={notificationProvider}
 							options={{
-								syncWithLocation: true,
+								syncWithLocation: false,
 								warnWhenUnsavedChanges: true,
 								useNewQueryKeys: true,
 								projectId: 'd0NzSK-Da1qaB-k1nokQ',

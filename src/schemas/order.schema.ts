@@ -57,7 +57,7 @@ export const orderHistorySchema = z.object({
 export const orderPaymentSchema = z.object({
 	id: z.string().optional().nullable(),
 	order_id: z.string(),
-	total_money: z.number(),
+	total: z.number(),
 	status: z.nativeEnum(OrderStatus),
 	method: z.nativeEnum(PaymentMethod),
 	transaction_code: z.string().optional().nullable(),
