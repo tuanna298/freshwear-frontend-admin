@@ -28,8 +28,9 @@ const PaymentList = ({ payments }: { payments: OrderPayment[] }) => (
 						<>
 							<DateField
 								value={dayjs(new Date(payment?.updated_at ?? ''))}
-								format="DD/MM/YYYY HH:MM"
-							/>
+								format="DD/MM/YYYY"
+							/>{' '}
+							- <span className="font-bold">Mã giao dịch</span>:{' '}
 							{payment.transaction_code}
 						</>
 					)}

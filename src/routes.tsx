@@ -13,7 +13,7 @@ import {
 	ProductUpdate,
 } from './modules/product'
 import { ReviewManagement } from './modules/review'
-import { UserManagement } from './modules/user'
+import { UserManagement, UserShow } from './modules/user'
 import { ROUTE_PATHS } from './shared/common/constants'
 import { AppLayout, ProtectedLayout, PublicLayout } from './shared/layouts'
 
@@ -139,6 +139,14 @@ export default () => (
 					element={
 						<Suspense>
 							<UserManagement />
+						</Suspense>
+					}
+				/>
+				<Route
+					path={USER + '/show/:id?'}
+					element={
+						<Suspense>
+							<UserShow />
 						</Suspense>
 					}
 				/>

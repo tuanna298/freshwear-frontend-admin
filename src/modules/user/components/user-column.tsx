@@ -4,11 +4,19 @@ import { IndexColumn } from '@/components/data-table/columns/index-column'
 import { SelectCheckboxColumn } from '@/components/data-table/columns/select-checkbox-column'
 import DataTableColumnHeader from '@/components/data-table/data-table-column-header'
 import { User } from '@/schemas/auth/user.schema'
+import { BaseKey } from '@refinedev/core'
 import { ColumnDef } from '@tanstack/react-table'
+import { ScanSearch } from 'lucide-react'
 
-interface UserColumnsProps {}
+interface UserColumnsProps {
+	onDelete: (id: BaseKey) => void
+	onShow: (id: BaseKey) => void
+}
 
-export const UserColumns = ({}: UserColumnsProps): ColumnDef<User>[] => {
+export const UserColumns = ({
+	onDelete,
+	onShow,
+}: UserColumnsProps): ColumnDef<User>[] => {
 	return [
 		SelectCheckboxColumn<User>(),
 		IndexColumn<User>({}),
@@ -60,6 +68,18 @@ export const UserColumns = ({}: UserColumnsProps): ColumnDef<User>[] => {
 				/>
 			),
 		},
-		ActionsColumn<User>({}),
+		ActionsColumn<User>({
+			display: {
+				delete: true,
+				update: false,
+			},
+			onDelete,
+			actions: (user: User) => (
+				<ScanSearch
+					className="size-4 cursor-pointer text-primary"
+					onClick={() => onShow(user.id as BaseKey)}
+				/>
+			),
+		}),
 	]
 }

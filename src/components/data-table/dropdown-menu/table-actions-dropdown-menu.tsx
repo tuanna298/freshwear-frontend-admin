@@ -32,7 +32,6 @@ const TableActionsDropdownMenu = ({
 					<FilePenLine className="size-4 cursor-pointer" onClick={onUpdate} />
 				</DialogTrigger>
 			)}
-			{actions}
 			{display?.delete && (
 				<AlertDialog
 					open={deleteDialogOpen}
@@ -51,6 +50,7 @@ const TableActionsDropdownMenu = ({
 					/>
 				</AlertDialog>
 			)}
+			{actions}
 		</div>
 	)
 }

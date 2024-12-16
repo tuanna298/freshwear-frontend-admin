@@ -3,18 +3,35 @@ import DataTableHeader from '@/components/data-table/data-table-header'
 import DataTablePagination from '@/components/data-table/data-table-paginator'
 import { User } from '@/schemas/auth/user.schema'
 import PageLayout from '@/shared/layouts/page'
-import { HttpError, useDeleteMany } from '@refinedev/core'
+import { BaseKey, HttpError, useDelete, useDeleteMany } from '@refinedev/core'
 import { useTable } from '@refinedev/react-table'
 import { useQueryClient } from '@tanstack/react-query'
 import { useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { UserColumns } from '../components/user-column'
 
 const UserManagement = () => {
 	const queryClient = useQueryClient()
+	const navigate = useNavigate()
 
 	const { mutate } = useDeleteMany()
 
-	const columns = useMemo(() => UserColumns({}), [])
+	const deleteMutation = useDelete()
+
+	const onDelete = (id: BaseKey) =>
+		deleteMutation.mutate({
+			resource: 'user',
+			id,
+			successNotification() {
+				return {
+					message: 'Xóa thành công',
+					type: 'success',
+				}
+			},
+		})
+	const onShow = (id: BaseKey) => navigate(`/user/show/${id}`)
+
+	const columns = useMemo(() => UserColumns({ onDelete, onShow }), [])
 
 	const {
 		refineCore: { tableQuery, setFilters },
@@ -47,7 +64,7 @@ const UserManagement = () => {
 				handleDelete={(ids: string[]) =>
 					mutate(
 						{
-							resource: 'color',
+							resource: 'user',
 							ids,
 							successNotification: () => {
 								return {

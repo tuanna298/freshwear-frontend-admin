@@ -33,7 +33,7 @@ function App() {
 						locale={vi_VN}
 						theme={{
 							token: {
-								colorPrimary: 'hsl(240 5.9% 10%)',
+								colorPrimary: '#c1c9cf',
 								fontFamily:
 									'ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
 							},

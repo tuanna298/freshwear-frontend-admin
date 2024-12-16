@@ -296,3 +296,7 @@
 .css-1jupepr {
 	color: #ffffff;
 }
+
+img {
+	object-position: top;
+}

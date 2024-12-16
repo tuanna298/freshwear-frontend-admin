@@ -9,7 +9,9 @@ interface OrderDetailColumnProps {}
 export const OrderDetailColumns =
 	({}: OrderDetailColumnProps): ColumnDef<OrderDetail>[] => {
 		return [
-			IndexColumn<OrderDetail>({}),
+			IndexColumn<OrderDetail>({
+				enableSorting: false,
+			}),
 			{
 				accessorKey: 'name',
 				meta: 'Sản phẩm',
@@ -24,7 +26,7 @@ export const OrderDetailColumns =
 					<div className="flex items-center">
 						<img
 							src={
-								row.original.product_detail?.image ||
+								row.original.product_detail?.product?.thumbnail ||
 								'assets/img/other/placeholder.jpg'
 							}
 							className="aspect-square size-[60xp] rounded-full object-cover object-top lg:size-[108px]"

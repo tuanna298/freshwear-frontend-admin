@@ -5,4 +5,9 @@ const UserManagement = lazy(async () => {
 	return import('./pages/user-management')
 })
 
-export { UserManagement }
+const UserShow = lazy(async () => {
+	await new Promise((r) => setTimeout(r, 300))
+	return import('./pages/user-show')
+})
+
+export { UserManagement, UserShow }

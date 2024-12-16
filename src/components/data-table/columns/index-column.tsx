@@ -20,7 +20,7 @@ export const IndexColumn = <T extends BaseDTO>({
 		const { pagination } = table.getState()
 		const { pageIndex, pageSize } = pagination
 
-		const isDescOrder = table.getColumn('created_at')?.getIsSorted() === 'desc'
+		const isDescOrder = table.getColumn('index')?.getIsSorted() === 'desc'
 
 		return isDescOrder
 			? table.getPageCount() - pageIndex * pageSize - row.index

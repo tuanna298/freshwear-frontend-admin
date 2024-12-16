@@ -9,18 +9,11 @@ import { ColumnsType } from 'antd/es/table'
 const { Paragraph } = Typography
 
 export const RecentOrders: React.FC = () => {
-	const {
-		tableProps,
-		tableQueryResult: { refetch },
-	} = useTable<Order>({
+	const { tableProps } = useTable<Order>({
 		resource: 'order',
-		initialSorter: [
-			{
-				field: 'updated_at',
-				order: 'desc',
-			},
-		],
-		initialPageSize: 4,
+		pagination: {
+			pageSize: 4,
+		},
 		permanentFilter: [
 			{
 				field: 'status',
@@ -50,6 +43,7 @@ export const RecentOrders: React.FC = () => {
 						record.details[0]?.product_detail?.product?.thumbnail ??
 						'/assets/images/placeholder.jpg'
 					}
+					className="object-top"
 				/>
 			),
 		},
@@ -99,7 +93,7 @@ export const RecentOrders: React.FC = () => {
 							style: 'currency',
 							notation: 'standard',
 						}}
-						value={record.totalMoney}
+						value={record.total_money}
 					/>
 					<Tag color="orange">{OrderStatusLabel[record.status]}</Tag>
 				</Space>
@@ -109,7 +103,7 @@ export const RecentOrders: React.FC = () => {
 	return (
 		<Table
 			{...tableProps}
-			pagination={{ ...tableProps.pagination, simple: true }}
+			pagination={false}
 			showHeader={false}
 			rowKey="id"
 			columns={columns}

@@ -66,7 +66,7 @@ export default function DataTablePagination<TData extends DefaultBaseDTO>({
 				canTriggerDelete && 'cursor-pointer font-medium text-red-500',
 			)}
 		>
-			{canTriggerDelete && <span>Xoá</span>}
+			{canTriggerDelete && <span className="ms-3">Xoá </span>}
 			{handleDelete && (
 				<>
 					{selectedRows.length}/{table.getFilteredRowModel().flatRows.length}{' '}
