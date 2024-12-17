@@ -15,8 +15,9 @@ import {
 	LoadingOutlined,
 	QuestionOutlined,
 } from '@ant-design/icons'
-import { Skeleton, Steps } from 'antd'
+import { Skeleton, Steps, Tooltip } from 'antd'
 import Grid from 'antd/es/grid'
+import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
 
 interface OrderStepsProps {
@@ -32,11 +33,15 @@ const OrderSteps = ({ order }: OrderStepsProps) => {
 		.map((screen) => screen[0])
 
 	const notFinishedCurrentStep = (event: IEvent) =>
-		event.status !== 'CANCELED' && event.status !== 'COMPLETED' && event.loading
+		event.status !== 'CANCELED' &&
+		event.status !== OrderStatus.PAYMENT_FAILED &&
+		event.status !== 'COMPLETED' &&
+		event.loading
 
 	const stepStatus = (event: IEvent) => {
 		if (!event.date) return 'wait'
 		if (event.status === 'CANCELED') return 'error'
+		if (event.status === OrderStatus.PAYMENT_FAILED) return 'error'
 		if (notFinishedCurrentStep(event)) return 'process'
 		return 'finish'
 	}
@@ -89,13 +94,13 @@ const OrderSteps = ({ order }: OrderStepsProps) => {
 									padding: '24px',
 								}}
 								description={event.note && event.note}
-								// subTitle={
-								// 	<Tooltip
-								// 		title={event.date && dayjs(event.date).format('LLL')}
-								// 	>
-								// 		{event.date && dayjs(event.date).format('DD/MM')}
-								// 	</Tooltip>
-								// }
+								subTitle={
+									<Tooltip
+										title={event.date && dayjs(event.date).format('LLL')}
+									>
+										{event.date && dayjs(event.date).format('DD/MM')}
+									</Tooltip>
+								}
 							/>
 						))}
 					</Steps>
@@ -116,6 +121,7 @@ const getOrderStatusTimeline = (orderHistories: OrderHistory[]): IEvent[] => {
 		OrderStatus.DELIVERING,
 		OrderStatus.COMPLETED,
 		OrderStatus.CANCELED,
+		OrderStatus.PAYMENT_FAILED,
 	]
 
 	// If there's 'CANCELED' status in orderHistories, remove it from statusList
@@ -125,6 +131,17 @@ const getOrderStatusTimeline = (orderHistories: OrderHistory[]): IEvent[] => {
 		)
 	) {
 		statusList = statusList.filter((status) => status !== OrderStatus.CANCELED)
+	}
+
+	// If there's 'PAYMENT_FAILED' status in orderHistories, keep it; otherwise, remove it
+	if (
+		!orderHistories.some(
+			(history) => history.action_status === OrderStatus.PAYMENT_FAILED,
+		)
+	) {
+		statusList = statusList.filter(
+			(status) => status !== OrderStatus.PAYMENT_FAILED,
+		)
 	}
 
 	const sortedOrderHistories = [...orderHistories].sort(

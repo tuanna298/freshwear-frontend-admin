@@ -44,7 +44,8 @@ const OrderActionsColumn = ({
 								className="size-[30px] border-destructive text-destructive hover:text-destructive"
 								disabled={
 									original.status === OrderStatus.COMPLETED ||
-									original.status === OrderStatus.CANCELED
+									original.status === OrderStatus.CANCELED ||
+									original.status === OrderStatus.PAYMENT_FAILED
 								}
 							>
 								<Ban size={18} />

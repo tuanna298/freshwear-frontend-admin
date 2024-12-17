@@ -7,6 +7,7 @@ import { ColorManagement } from './modules/color'
 import { Dashboard } from './modules/dashboard'
 import { DashboardContextProvider } from './modules/dashboard/context'
 import { OrderManagement, OrderUpdate } from './modules/order'
+import { PaymentManagement } from './modules/payment'
 import {
 	ProductCreate,
 	ProductManagement,
@@ -147,6 +148,14 @@ export default () => (
 					element={
 						<Suspense>
 							<UserShow />
+						</Suspense>
+					}
+				/>
+				<Route
+					path={PAYMENT}
+					element={
+						<Suspense>
+							<PaymentManagement />
 						</Suspense>
 					}
 				/>

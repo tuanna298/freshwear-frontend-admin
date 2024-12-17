@@ -8,11 +8,16 @@ export const generateFilter = (
 	if (filters) {
 		filters.map((filter) => {
 			if ('field' in filter) {
-				const { field, operator, value } = filter
+				let { field, operator, value } = filter
 
 				if (field === 'q') {
 					queryFilters[field] = value
 					return
+				}
+
+				// Transform 'index' to 'created_at'
+				if (field === 'index') {
+					field = 'created_at'
 				}
 
 				const mappedOperator = mapOperator(operator)
@@ -26,9 +31,18 @@ export const generateFilter = (
 
 export const generateSort = (sorters?: CrudSorting) => {
 	if (sorters && sorters.length > 0) {
-		return sorters.map((item) => ({
-			[item.field]: item.order,
-		}))
+		return sorters.map((item) => {
+			let { field, order } = item
+
+			// Transform 'index' to 'created_at'
+			if (field === 'index') {
+				field = 'created_at'
+			}
+
+			return {
+				[field]: order,
+			}
+		})
 	}
 	return []
 }

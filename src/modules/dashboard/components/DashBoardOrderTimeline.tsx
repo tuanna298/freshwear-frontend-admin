@@ -44,9 +44,7 @@ export const DashBoardOrderTimeline: React.FC = () => {
 
 	const getStatusColor = (
 		status: OrderStatus,
-	):
-		| { indicatorColor: string; backgroundColor: string; text: string }
-		| undefined => {
+	): { indicatorColor: string; backgroundColor: string; text: string } => {
 		switch (status) {
 			case 'PENDING':
 				return {
@@ -84,8 +82,18 @@ export const DashBoardOrderTimeline: React.FC = () => {
 					backgroundColor: '#f9f0ff',
 					text: 'Đơn hàng đã bị hủy',
 				}
+			case 'PAYMENT_FAILED':
+				return {
+					indicatorColor: 'red',
+					backgroundColor: '#fff1f0',
+					text: 'Thanh toán thất bại',
+				}
 			default:
-				break
+				return {
+					indicatorColor: 'black',
+					backgroundColor: '#ffffff',
+					text: 'Unknown status',
+				}
 		}
 	}
 

@@ -18,6 +18,7 @@ export enum OrderStatus {
 	COMPLETED = 'COMPLETED',
 	CANCELED = 'CANCELED',
 	EXPIRED = 'EXPIRED',
+	PAYMENT_FAILED = 'PAYMENT_FAILED',
 }
 
 export enum OrderStatusLabel {
