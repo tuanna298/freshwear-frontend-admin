@@ -1,5 +1,4 @@
 import DataTable from '@/components/data-table/data-table'
-import { AppToast } from '@/components/ui/toast'
 import { Attribute } from '@/schemas/attribute.schema'
 import { Color } from '@/schemas/color.schema'
 import { ProductDetail } from '@/schemas/product.schema'
@@ -150,8 +149,6 @@ const ProductDetailTable = () => {
 				const filteredDetails = newDetails.filter(Boolean)
 
 				setValue('details', filteredDetails)
-			} else {
-				AppToast.info('Vui lòng điền đầy đủ thông tin sản phẩm')
 			}
 		})
 	}, [colors, sizes, material, brand, trigger, name])

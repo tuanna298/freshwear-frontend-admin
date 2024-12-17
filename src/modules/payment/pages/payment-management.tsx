@@ -6,7 +6,7 @@ import PageLayout from '@/shared/layouts/page'
 import { HttpError } from '@refinedev/core'
 import { useTable } from '@refinedev/react-table'
 import { useMemo } from 'react'
-import { PaymentColumns } from '../components/payment-color'
+import { PaymentColumns } from '../components/payment-column'
 
 const PaymentManagement = () => {
 	const columns = useMemo(() => PaymentColumns(), [])

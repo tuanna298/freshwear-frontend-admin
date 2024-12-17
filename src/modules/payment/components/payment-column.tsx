@@ -1,7 +1,9 @@
+import { NumberField } from '@/components/custom/number-field'
 import { IndexColumn } from '@/components/data-table/columns/index-column'
 import DataTableColumnHeader from '@/components/data-table/data-table-column-header'
-import { Payment, PaymentMethod } from '@/schemas/payment.schema'
+import { Payment, PaymentMethod, PaymentStatus } from '@/schemas/payment.schema'
 import { ColumnDef } from '@tanstack/react-table'
+import dayjs from 'dayjs'
 
 export const PaymentColumns = (): ColumnDef<Payment>[] => {
 	return [
@@ -26,13 +28,13 @@ export const PaymentColumns = (): ColumnDef<Payment>[] => {
 			accessorKey: 'total',
 			meta: 'Tổng tiền',
 			header: (props) => <DataTableColumnHeader title="Tổng tiền" {...props} />,
-			cell: ({ row }) => row.original.total,
+			cell: ({ row }) => <NumberField value={row.original.total} />,
 		},
 		{
 			accessorKey: 'method',
-			meta: 'Phương thức thanh toán',
+			meta: 'Phương thức',
 			header: (props) => (
-				<DataTableColumnHeader title="Phương thức thanh toán" {...props} />
+				<DataTableColumnHeader title="Phương thức" {...props} />
 			),
 			cell: ({ row }) =>
 				row.original.method === PaymentMethod.CASH
@@ -53,7 +55,10 @@ export const PaymentColumns = (): ColumnDef<Payment>[] => {
 			header: (props) => (
 				<DataTableColumnHeader title="Trạng thái" {...props} />
 			),
-			cell: ({ row }) => row.original.status,
+			cell: ({ row }) =>
+				row.original.status === PaymentStatus.PAID
+					? 'Đã thanh toán'
+					: 'Chưa thanh toán',
 		},
 		{
 			accessorKey: 'updated_at',
@@ -61,7 +66,8 @@ export const PaymentColumns = (): ColumnDef<Payment>[] => {
 			header: (props) => (
 				<DataTableColumnHeader title="Thanh toán lúc" {...props} />
 			),
-			cell: ({ row }) => row.original.updated_at,
+			cell: ({ row }) =>
+				dayjs(row.original.updated_at).format('DD/MM/YYYY HH:mm'),
 		},
 	]
 }

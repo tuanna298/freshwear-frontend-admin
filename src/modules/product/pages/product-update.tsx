@@ -5,9 +5,10 @@ import {
 	productSchema,
 } from '@/schemas/product.schema'
 import PageLayout from '@/shared/layouts/page'
-import { useNavigation, useUpdate } from '@refinedev/core'
+import { HttpError, useNavigation, useOne, useUpdate } from '@refinedev/core'
 import { useQueryClient } from '@tanstack/react-query'
 import { omit, uniqBy } from 'lodash'
+import { useEffect, useState } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
 import ProductUpdateForm from '../components/product-update-form'
 
@@ -28,6 +29,21 @@ const ProductUpdate = () => {
 	const { list } = useNavigation()
 	const { state } = useLocation()
 	const { id } = useParams<{ id: string }>()
+	const { data: dataOne } = useOne<Product, HttpError>({
+		resource: 'product',
+		id,
+		queryOptions: {
+			enabled: !!id,
+		},
+	})
+
+	const [product, setProduct] = useState<Product>(state?.data || {})
+
+	useEffect(() => {
+		if (dataOne?.data) {
+			setProduct(dataOne.data)
+		}
+	}, [dataOne?.data])
 
 	const update = useUpdate<Product>({
 		resource: 'product',
@@ -73,7 +89,7 @@ const ProductUpdate = () => {
 				})}
 				onSubmit={onSubmit}
 				formProps={{
-					defaultValues: getDefaultValue(state?.data) || productDefaultValues,
+					defaultValues: getDefaultValue(product) || productDefaultValues,
 				}}
 				checkDirtyFields={false}
 			>
