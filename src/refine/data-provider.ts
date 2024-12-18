@@ -73,7 +73,7 @@ export default {
 
 		const content = response.data
 
-		const data = content.data
+		const data = content.data || content
 		const totalElements = content?.pageInfo?.total
 		const startIndex =
 			pageSize !== undefined && current !== undefined

@@ -29,14 +29,21 @@ const OverviewGrowth = () => {
 		},
 	})
 
-	const growth = data?.data ?? ([] as any)
+	const growth = (data as any)?.response ?? ([] as any)
 
 	const filteredGrowth = growth.filter((item: any) => item.name !== 'Customers')
 
 	const config: LineConfig = {
 		data: filteredGrowth.map((item: { name: string }) => ({
 			...item,
-			name: capitalize(item.name),
+			name:
+				item.name === 'Revenue'
+					? 'Doanh thu'
+					: item.name === 'Order'
+						? 'Đơn hàng'
+						: item.name === 'Customers'
+							? 'Khách hàng'
+							: capitalize(item.name),
 		})),
 		xField: 'date',
 		yField: 'dailyGrowth',

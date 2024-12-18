@@ -1,5 +1,5 @@
 export interface ISalesChart {
 	date: string
-	title: 'Order Count' | 'Order Amount'
+	title: 'Số lượng đơn hàng' | 'Số tiền đơn hàng'
 	value: number
 }

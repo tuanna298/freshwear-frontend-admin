@@ -10,7 +10,11 @@ type TrendingMenuProps = {
 	range: { start: number; end: number }
 }
 export const TrendingMenu: React.FC<TrendingMenuProps> = ({ range }) => {
-	const { listProps, setFilters } = useSimpleList<ProductDetail>({
+	const {
+		listProps,
+		setFilters,
+		query: { data },
+	} = useSimpleList<ProductDetail>({
 		resource: 'statistic/trending',
 		pagination: { pageSize: 5 },
 		filters: {
@@ -26,6 +30,11 @@ export const TrendingMenu: React.FC<TrendingMenuProps> = ({ range }) => {
 					value: range.end,
 				},
 			],
+		},
+		queryOptions: {
+			onSuccess(data) {
+				console.log('data', data)
+			},
 		},
 		syncWithLocation: false,
 	})
@@ -51,6 +60,7 @@ export const TrendingMenu: React.FC<TrendingMenuProps> = ({ range }) => {
 	return (
 		<AntdList
 			{...listProps}
+			// dataSource={listProps.data}
 			pagination={false}
 			renderItem={(item, index) => <MenuItem item={item} index={index} />}
 		/>
@@ -73,7 +83,7 @@ const MenuItem: React.FC<{ item: ProductDetail; index: number }> = ({
 							xl: 132,
 							xxl: 108,
 						}}
-						src={item.urlImage}
+						src={item?.image || item?.product?.thumbnail}
 					/>
 					<AvatarCircle>
 						<span>#{index + 1}</span>
@@ -81,7 +91,7 @@ const MenuItem: React.FC<{ item: ProductDetail; index: number }> = ({
 				</AvatarWrapper>
 
 				<TextWrapper>
-					<Text strong>{item.product.name}</Text>
+					<Text strong>{item?.product?.name}</Text>
 					<NumberField
 						strong
 						options={{
@@ -90,10 +100,10 @@ const MenuItem: React.FC<{ item: ProductDetail; index: number }> = ({
 							notation: 'standard',
 						}}
 						locale={'vi'}
-						value={item.price}
+						value={item?.price}
 					/>
 					<Text strong style={{ color: 'red' }}>
-						{item.saleCount} đã bán
+						{item?.sale_count} đã bán
 					</Text>
 				</TextWrapper>
 			</Space>

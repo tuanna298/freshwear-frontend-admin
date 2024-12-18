@@ -1,3 +1,4 @@
+import NotificationFloat from '@/components/custom/notification-float'
 import { AUTH_KEYS } from '@/modules/auth/common/constants'
 import { useAuthStore } from '@/modules/auth/stores/use-auth-store'
 import { User } from '@/schemas/auth/user.schema'
@@ -27,7 +28,12 @@ const ProtectedLayout = () => {
 		return <Navigate to={SIGN_IN} />
 	}
 
-	return <Outlet />
+	return (
+		<>
+			<NotificationFloat />
+			<Outlet />
+		</>
+	)
 }
 
 export default ProtectedLayout

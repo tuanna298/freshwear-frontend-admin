@@ -40,7 +40,7 @@ export const NewCustomers: React.FC = () => {
 
 	const config = useMemo(() => {
 		const config: ColumnConfig = {
-			data: data?.data?.data || [],
+			data: (data as any)?.response?.data || [],
 			loading: isLoading,
 			padding: 0,
 			xField: 'date',
@@ -54,7 +54,7 @@ export const NewCustomers: React.FC = () => {
 				customContent: (title, data) => {
 					return `<div style="padding: 8px 4px; font-size:16px; font-weight:600">${dayjs(
 						new Date(Number(title) * 1000),
-					).format('LL')}: ${data[0]?.value} New customer</div>`
+					).format('L')}: ${data[0]?.value} khách hàng mới</div>`
 				},
 			},
 
@@ -81,7 +81,7 @@ export const NewCustomers: React.FC = () => {
 
 		return config
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [data])
+	}, [(data as any)?.response?.data])
 
 	return (
 		<ConfigProvider
@@ -93,10 +93,10 @@ export const NewCustomers: React.FC = () => {
 				<Header>
 					<Title level={3}>Khách hàng</Title>
 					<HeaderNumbers>
-						<Text strong>{data?.data?.total ?? 0}</Text>
+						<Text strong>{(data as any)?.response?.total ?? 0}</Text>
 						<div>
-							<Text strong>{data?.data?.trend ?? 0}%</Text>
-							{(data?.data?.trend ?? 0) > 0 ? (
+							<Text strong>{(data as any)?.response?.trend ?? 0}%</Text>
+							{((data as any)?.response?.trend ?? 0) > 0 ? (
 								<IncreaseIcon />
 							) : (
 								<DecreaseIcon />

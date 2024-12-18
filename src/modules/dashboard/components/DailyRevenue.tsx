@@ -46,7 +46,7 @@ export const DailyRevenue: React.FC = () => {
 
 	const config = useMemo(() => {
 		const config: LineConfig = {
-			data: data?.data?.data || [],
+			data: (data as any)?.response?.data || [],
 			loading: isLoading,
 			padding: 'auto',
 			xField: 'date',
@@ -75,7 +75,7 @@ export const DailyRevenue: React.FC = () => {
 		}
 
 		return config
-	}, [data?.data?.data, isLoading])
+	}, [(data as any)?.response?.data, isLoading])
 
 	return (
 		<DailyRevenueWrapper>
@@ -83,10 +83,19 @@ export const DailyRevenue: React.FC = () => {
 				<TitleAreaAmount>
 					<Typography.Title level={3}>Doanh số</Typography.Title>
 					<TitleAreNumber>
-						<NumberField value={data?.data?.total ?? 0} />
+						<NumberField
+							options={{
+								currency: 'VND',
+								currencyDisplay: 'symbol',
+								currencySign: 'standard',
+								style: 'currency',
+								notation: 'compact',
+							}}
+							value={(data as any)?.response?.total ?? 0}
+						/>
 						<div style={{ marginLeft: '1rem' }}>
-							<Text strong>{data?.data?.trend ?? 0}%</Text>
-							{(data?.data?.trend ?? 0) > 0 ? (
+							<Text strong>{(data as any)?.response?.trend ?? 0}%</Text>
+							{((data as any)?.response?.trend ?? 0) > 0 ? (
 								<IncreaseIcon />
 							) : (
 								<DecreaseIcon />

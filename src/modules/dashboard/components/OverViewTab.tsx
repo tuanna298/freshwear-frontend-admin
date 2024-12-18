@@ -13,7 +13,6 @@ const OverviewTab: React.FC = () => {
 					<BarChartOutlined /> Tổng quan
 				</span>
 			),
-
 			children: <OverviewGrowth />,
 		},
 	]

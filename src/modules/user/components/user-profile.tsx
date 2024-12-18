@@ -6,7 +6,7 @@ import {
 	SignatureOutlined,
 	UserOutlined,
 } from '@ant-design/icons'
-import { Avatar, Card, Grid, Space, Typography } from 'antd'
+import { Card, Grid, Space, Typography } from 'antd'
 import React from 'react'
 
 const { useBreakpoint } = Grid
@@ -18,7 +18,7 @@ const UserProfile: React.FC<{ user: User }> = ({ user }) => {
 		<Card bordered={false} className="h-full">
 			<Space direction="vertical" className="h-full w-full">
 				<Space direction="vertical" className="w-full text-center">
-					<Avatar size={120} src={user?.avatar}></Avatar>
+					{/* <Avatar size={120} src={user?.avatar}></Avatar> */}
 					<Typography.Title level={3}>{user?.full_name}</Typography.Title>
 				</Space>
 				<Space

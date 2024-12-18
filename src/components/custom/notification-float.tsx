@@ -5,7 +5,7 @@ import { Badge, Button, FloatButton } from 'antd'
 import dayjs from 'dayjs'
 import React from 'react'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
-import { AnimatedList } from './animated-list'
+import { ScrollArea } from '../ui/scroll-area'
 
 export interface NotificationItem {
 	id: number
@@ -29,14 +29,14 @@ enum NotificationType {
 const NOTIFICATION_TITLES: Record<NotificationType, string> = {
 	[NotificationType.ORDER_PLACED]: 'Đơn hàng mới được đặt',
 	[NotificationType.ORDER_PENDING]: 'Đơn hàng đang chờ xử lý',
-	[NotificationType.ORDER_CHANGED]: 'Thay đổi trạng thái đơn hàng',
+	[NotificationType.ORDER_CHANGED]: 'Đánh giá mới được thêm',
 	[NotificationType.PRODUCT_LOW_STOCK]: 'Sản phẩm sắp hết hàng',
 }
 
 const NOTIFICATION_CONFIGS = {
 	[NotificationType.ORDER_PLACED]: { icon: '📦', color: '#00C9A7' },
 	[NotificationType.ORDER_PENDING]: { icon: '⏳', color: '#FFB800' },
-	[NotificationType.ORDER_CHANGED]: { icon: '🔄', color: '#FF3D71' },
+	[NotificationType.ORDER_CHANGED]: { icon: '📰', color: '#FF3D71' },
 	[NotificationType.PRODUCT_LOW_STOCK]: { icon: '⚠️', color: '#1E86FF' },
 }
 
@@ -124,33 +124,34 @@ const NotificationFloat: React.FC = () => {
 				)}
 			>
 				<div className="mb-4 flex items-center justify-between">
-					<h3 className="text-lg font-semibold">Thông báo</h3>
-					{unreadCount > 0 && (
-						<Button
-							type="text"
-							icon={<CheckOutlined />}
-							onClick={() => markAllNotificationAsRead.mutate()}
-							loading={markAllNotificationAsRead.isLoading}
-						>
-							Đánh dấu tất cả đã đọc
-						</Button>
-					)}
+					<h3 className="px-4 text-lg font-semibold">Thông báo</h3>
+					<Button
+						type="text"
+						icon={<CheckOutlined />}
+						onClick={() => markAllNotificationAsRead.mutate()}
+						loading={markAllNotificationAsRead.isLoading}
+						disabled={markAllNotificationAsRead.isLoading || unreadCount === 0}
+					>
+						Đánh dấu tất cả đã đọc
+					</Button>
 				</div>
-				{notifications.length === 0 ? (
-					<div className="flex h-full items-center justify-center text-gray-500">
-						Không có thông báo mới
-					</div>
-				) : (
-					<AnimatedList delay={200}>
-						{notifications.map((item) => (
-							<Notification
-								{...item}
-								key={item.id}
-								onMarkAsRead={markNotificationAsRead.mutate}
-							/>
-						))}
-					</AnimatedList>
-				)}
+				<ScrollArea>
+					{notifications.length === 0 ? (
+						<div className="flex h-full items-center justify-center text-gray-500">
+							Không có thông báo mới
+						</div>
+					) : (
+						<div className="space-y-3 px-4 py-1 pb-6">
+							{notifications.map((item) => (
+								<Notification
+									{...item}
+									key={item.id}
+									onMarkAsRead={markNotificationAsRead.mutate}
+								/>
+							))}
+						</div>
+					)}
+				</ScrollArea>
 			</PopoverContent>
 		</Popover>
 	)

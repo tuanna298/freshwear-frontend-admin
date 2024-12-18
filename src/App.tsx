@@ -8,7 +8,6 @@ import { QueryClient } from '@tanstack/react-query'
 import { ConfigProvider } from 'antd'
 import vi_VN from 'antd/locale/vi_VN'
 import { BrowserRouter } from 'react-router-dom'
-import NotificationFloat from './components/custom/notification-float'
 import { Toaster } from './components/ui/sonner'
 import TooltipProvider from './components/ui/tooltip'
 import authProvider from './refine/auth-provider'
@@ -74,7 +73,6 @@ function App() {
 							<UnsavedChangesNotifier />
 							<DocumentTitleHandler />
 							<Toaster />
-							<NotificationFloat />
 						</Refine>
 					</ConfigProvider>
 				</TooltipProvider>

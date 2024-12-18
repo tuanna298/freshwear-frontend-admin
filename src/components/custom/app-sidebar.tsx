@@ -9,11 +9,9 @@ import { motion } from 'framer-motion'
 import {
 	ALargeSmall,
 	Gauge,
-	HandCoins,
 	Lock,
 	LockOpen,
 	LogOut,
-	MessageSquareText,
 	NotepadText,
 	Package,
 	Palette,
@@ -86,16 +84,16 @@ const links = [
 		href: USER,
 		icon: <Users className={linkIconClassName} />,
 	},
-	{
-		label: 'Đánh giá',
-		href: REVIEW,
-		icon: <MessageSquareText className={linkIconClassName} />,
-	},
-	{
-		label: 'Thanh toán',
-		href: PAYMENT,
-		icon: <HandCoins className={linkIconClassName} />,
-	},
+	// {
+	// 	label: 'Đánh giá',
+	// 	href: REVIEW,
+	// 	icon: <MessageSquareText className={linkIconClassName} />,
+	// },
+	// {
+	// 	label: 'Thanh toán',
+	// 	href: PAYMENT,
+	// 	icon: <HandCoins className={linkIconClassName} />,
+	// },
 ]
 
 const Logo = () => {

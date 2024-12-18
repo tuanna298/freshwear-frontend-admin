@@ -39,7 +39,7 @@ export const DailyOrders: React.FC = () => {
 
 	const config = useMemo(() => {
 		const config: ColumnConfig = {
-			data: data?.data?.data || [],
+			data: (data as any)?.response?.data || [],
 			loading: isLoading,
 			padding: 0,
 			xField: 'date',
@@ -79,18 +79,22 @@ export const DailyOrders: React.FC = () => {
 		}
 
 		return config
-	}, [data?.data?.data, isLoading])
+	}, [(data as any)?.response?.data, isLoading])
 
 	return (
 		<DailyOrderWrapper>
 			<TitleArea>
 				<Title level={3}>Đơn hàng</Title>
 				<HeaderNumbers>
-					<Text strong>{data?.data?.total ?? 0} </Text>
+					<Text strong>{(data as any)?.response?.total ?? 0} </Text>
 
 					<div>
-						<Text strong>{data?.data?.trend ?? 0}%</Text>
-						{(data?.data?.trend ?? 0) > 0 ? <IncreaseIcon /> : <DecreaseIcon />}
+						<Text strong>{(data as any)?.response?.trend ?? 0}%</Text>
+						{((data as any)?.response?.trend ?? 0) > 0 ? (
+							<IncreaseIcon />
+						) : (
+							<DecreaseIcon />
+						)}
 					</div>
 				</HeaderNumbers>
 			</TitleArea>

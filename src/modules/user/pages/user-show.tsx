@@ -1,5 +1,6 @@
 import { API_URL } from '@/shared/common/constants'
 import http from '@/shared/configs/http.config'
+import PageLayout from '@/shared/layouts/page'
 import { IResourceComponentsProps } from '@refinedev/core'
 import { useQuery } from '@tanstack/react-query'
 import { Col, Row, Spin } from 'antd'
@@ -20,20 +21,26 @@ const UserShow: React.FC<IResourceComponentsProps> = () => {
 	const user = data?.data
 
 	return (
-		<Spin spinning={isLoading}>
-			<Row gutter={[16, 16]}>
-				<Col xl={8} lg={24} xs={24}>
-					{user && <UserProfile user={user} />}
-				</Col>
-				<Col xl={16} xs={24}>
-					{user && (
-						<Fragment>
-							<UserOrderList id={user.id} />
-						</Fragment>
-					)}
-				</Col>
-			</Row>
-		</Spin>
+		<PageLayout
+			title="Chi tiết người dùng"
+			wrapWithCard={false}
+			animated={true}
+		>
+			<Spin spinning={isLoading}>
+				<Row gutter={[16, 16]}>
+					<Col xl={8} lg={24} xs={24}>
+						{user && <UserProfile user={user} />}
+					</Col>
+					<Col xl={16} xs={24}>
+						{user && (
+							<Fragment>
+								<UserOrderList id={user.id} />
+							</Fragment>
+						)}
+					</Col>
+				</Row>
+			</Spin>
+		</PageLayout>
 	)
 }
 
