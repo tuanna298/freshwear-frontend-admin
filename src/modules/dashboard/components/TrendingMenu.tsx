@@ -10,11 +10,7 @@ type TrendingMenuProps = {
 	range: { start: number; end: number }
 }
 export const TrendingMenu: React.FC<TrendingMenuProps> = ({ range }) => {
-	const {
-		listProps,
-		setFilters,
-		query: { data },
-	} = useSimpleList<ProductDetail>({
+	const { listProps, setFilters } = useSimpleList<ProductDetail>({
 		resource: 'statistic/trending',
 		pagination: { pageSize: 5 },
 		filters: {

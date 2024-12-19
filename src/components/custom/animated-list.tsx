@@ -23,6 +23,7 @@ export const AnimatedList = React.memo(
 
 				return () => clearTimeout(timeout)
 			}
+			return undefined
 		}, [index, delay, childrenArray.length])
 
 		const itemsToShow = useMemo(() => {

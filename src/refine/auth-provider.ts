@@ -1,11 +1,10 @@
 import { handleError } from '@/lib/axios.util'
+import authApi from '@/modules/auth/apis/auth.api'
 import { useAuthStore } from '@/modules/auth/stores/use-auth-store'
 import { ROUTE_PATHS } from '@/shared/common/constants'
 import { AuthProvider } from '@refinedev/core'
 
 const { ROOT, SIGN_IN } = ROUTE_PATHS
-
-const authApi = await import('@/modules/auth/apis/auth.api')
 
 export default {
 	login: async ({ username, password }) => {
@@ -13,7 +12,7 @@ export default {
 		try {
 			const {
 				data: { access_token, refresh_token },
-			} = await authApi.default.signIn({
+			} = await authApi.signIn({
 				username,
 				password,
 			})
@@ -44,7 +43,7 @@ export default {
 	logout: async () => {
 		const { accessToken, clear } = useAuthStore.getState()
 		try {
-			authApi.default.signOut({
+			authApi.signOut({
 				headers: {
 					Authorization: `Bearer ${accessToken}`,
 				},
@@ -72,7 +71,7 @@ export default {
 		if (!accessToken) return null
 
 		try {
-			return (await authApi.default.getProfile()).data
+			return (await authApi.getProfile()).data
 		} catch (error) {
 			console.error('Error fetching user identity', error)
 			return null

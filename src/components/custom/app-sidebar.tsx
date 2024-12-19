@@ -28,18 +28,7 @@ import { Toggle } from '../ui/toggle'
 import Popconfirm from './pop-confirm'
 import PreventDefaultArea from './prevent-default-area'
 
-const {
-	ROOT,
-	COLOR,
-	BRAND,
-	MATERIAL,
-	SIZE,
-	PRODUCT,
-	REVIEW,
-	ORDER,
-	PAYMENT,
-	USER,
-} = ROUTE_PATHS
+const { ROOT, COLOR, BRAND, MATERIAL, SIZE, PRODUCT, ORDER, USER } = ROUTE_PATHS
 
 const linkIconClassName = 'h-6 w-6 flex-shrink-0'
 

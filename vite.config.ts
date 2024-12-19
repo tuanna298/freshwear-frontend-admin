@@ -9,4 +9,7 @@ export default defineConfig({
 			'@': path.join(__dirname, 'src'),
 		},
 	},
+	esbuild: {
+		target: 'esnext',
+	},
 })

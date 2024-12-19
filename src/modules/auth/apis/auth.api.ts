@@ -6,6 +6,7 @@ import {
 } from '@/schemas/auth/user.schema'
 import { API_PATHS } from '@/shared/common/constants'
 import { BaseResponse } from '@/shared/common/interfaces'
+import http from '@/shared/configs/http.config'
 import { AxiosRequestConfig } from 'axios'
 import { AuthTokens } from '../common/types'
 
@@ -18,7 +19,6 @@ const {
 	},
 } = API_PATHS
 
-const httpConfig = await import('@/shared/configs/http.config')
 class AuthApi {
 	constructor(public path: string) {}
 
@@ -27,21 +27,21 @@ class AuthApi {
 	}
 
 	signIn = async (dto: SignInDto): Promise<BaseResponse<AuthTokens>> =>
-		httpConfig.default.post(this.buildUrl(SIGN_IN), dto)
+		http.post(this.buildUrl(SIGN_IN), dto)
 
 	signOut = async (configs?: AxiosRequestConfig): Promise<void> =>
-		httpConfig.default.post(this.buildUrl(SIGN_OUT), undefined, configs)
+		http.post(this.buildUrl(SIGN_OUT), undefined, configs)
 
 	getProfile = async (): Promise<BaseResponse<User>> =>
-		httpConfig.default.get(this.buildUrl(ME))
+		http.get(this.buildUrl(ME))
 
 	updateProfile = async (dto: UpdateProfileDto): Promise<BaseResponse<void>> =>
-		httpConfig.default.put(this.buildUrl(UPDATE_PROFILE), dto)
+		http.put(this.buildUrl(UPDATE_PROFILE), dto)
 
 	changePassword = async (
 		dto: ChangePasswordDto,
 	): Promise<BaseResponse<void>> =>
-		httpConfig.default.post(this.buildUrl(CHANGE_PASSWORD), dto)
+		http.post(this.buildUrl(CHANGE_PASSWORD), dto)
 }
 
 export default new AuthApi(BASE)

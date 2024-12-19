@@ -7,6 +7,7 @@ type OrderStatusProps = {
 }
 
 const statusColorMap: Record<OrderStatus, string> = {
+	[OrderStatus.PLACE_ORDER]: 'bg-orange-500 text-white',
 	PENDING: 'bg-orange-500 text-white',
 	WAIT_FOR_CONFIRMATION: 'bg-cyan-500 text-white',
 	DELIVERING: 'bg-green-500 text-white',
@@ -14,6 +15,7 @@ const statusColorMap: Record<OrderStatus, string> = {
 	COMPLETED: 'bg-blue-500 text-white',
 	CANCELED: 'bg-red-500 text-white',
 	EXPIRED: 'bg-red-500 text-white',
+	[OrderStatus.PAYMENT_FAILED]: 'bg-red-500 text-white',
 }
 
 const OrderStatusBadge: React.FC<OrderStatusProps> = ({ status }) => (
